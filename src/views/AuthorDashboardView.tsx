@@ -10,12 +10,14 @@ import {
   ExternalLink,
   CheckCircle2,
   AlertTriangle,
-  XCircle
+  XCircle,
+  LogIn,
+  UserCheck
 } from 'lucide-react';
 import { UserProfile, JOURNAL_ARTICLES, AdminVerificationItem } from '../data/satwaData';
 
 interface AuthorDashboardViewProps {
-  user: UserProfile;
+  user: UserProfile | null;
   verificationQueue: AdminVerificationItem[];
   onNavigateScreen: (screenId: string) => void;
 }
@@ -26,9 +28,6 @@ export const AuthorDashboardView: React.FC<AuthorDashboardViewProps> = ({
   onNavigateScreen 
 }) => {
   const [activeTab, setActiveTab] = useState<'MY_SUBMISSIONS' | 'FAVORITES'>('MY_SUBMISSIONS');
-
-  // Filter items submitted by current user or show current queue items
-  const userSubmissions = verificationQueue;
 
   const statusBadge = (status: string) => {
     switch (status) {
@@ -47,48 +46,67 @@ export const AuthorDashboardView: React.FC<AuthorDashboardViewProps> = ({
     <div className="space-y-8 pb-24">
       {/* SCREEN_8 Identifier Watermark Badge */}
       <div className="bg-[#062e23] text-[#d4a373] text-[11px] font-mono py-1 px-4 text-center border-b border-[#d4a373]/30">
-        [SCREEN_8] Dasbor Penulis - Satwalogi (Manajemen Naskah User Biasa)
+        [SCREEN_8] Dasbor Penulis - Satwalogi (Manajemen Naskah User)
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        {/* Author Header Banner */}
-        <div className="bg-[#062e23] text-[#f9faf6] p-6 sm:p-8 rounded-3xl border border-[#d4a373]/30 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-4">
-            <img
-              src={user.avatar}
-              alt={user.name}
-              className="w-16 h-16 rounded-2xl object-cover border-2 border-[#d4a373]"
-            />
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-serif font-bold text-[#f9faf6]">{user.name}</h1>
-                <span className="px-2.5 py-0.5 rounded-full bg-[#d4a373] text-[#062e23] text-[10px] font-bold uppercase">
-                  {user.role}
-                </span>
-              </div>
-              <p className="text-xs text-[#b4d7cd] mt-0.5">{user.title} • {user.institution}</p>
+        {/* Guest Banner if not logged in */}
+        {!user && (
+          <div className="bg-[#062e23] text-[#e8ede6] p-6 rounded-3xl border border-[#d4a373]/30 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
+            <div className="space-y-1 text-center sm:text-left">
+              <h3 className="font-serif font-bold text-lg text-[#d4a373]">Sesi Pengunjung Tamu</h3>
+              <p className="text-xs text-[#b4d7cd]">Masuk ke akun Anda untuk mengelola draf naskah pribadi dan melihat indeks sitasi.</p>
             </div>
+            <button
+              onClick={() => onNavigateScreen('SCREEN_11')}
+              className="bg-[#d4a373] text-[#062e23] px-5 py-2.5 rounded-xl font-bold text-xs hover:bg-white transition-colors flex items-center gap-2 shrink-0 shadow-md"
+            >
+              <LogIn size={16} />
+              <span>Masuk / Daftar [SCREEN_11]</span>
+            </button>
           </div>
+        )}
 
-          {/* New Article CTA */}
-          <button
-            onClick={() => onNavigateScreen('SCREEN_12')}
-            className="bg-[#d4a373] hover:bg-white text-[#062e23] px-5 py-3 rounded-2xl font-bold text-xs transition-colors flex items-center gap-2 shadow-md shrink-0"
-          >
-            <Plus size={18} />
-            <span>Tulis & Submit Artikel Baru [SCREEN_12]</span>
-          </button>
-        </div>
+        {/* Author Header Banner if logged in */}
+        {user && (
+          <div className="bg-[#062e23] text-[#f9faf6] p-6 sm:p-8 rounded-3xl border border-[#d4a373]/30 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-4">
+              <img
+                src={user.avatar}
+                alt={user.name}
+                className="w-16 h-16 rounded-2xl object-cover border-2 border-[#d4a373]"
+              />
+              <div>
+                <div className="flex items-center gap-2">
+                  <h1 className="text-2xl font-serif font-bold text-[#f9faf6]">{user.name}</h1>
+                  <span className="px-2.5 py-0.5 rounded-full bg-[#d4a373] text-[#062e23] text-[10px] font-bold uppercase">
+                    {user.role}
+                  </span>
+                </div>
+                <p className="text-xs text-[#b4d7cd] mt-0.5">{user.title} • {user.institution}</p>
+              </div>
+            </div>
 
-        {/* 4 Key Performance Stat Cards */}
+            {/* New Article CTA */}
+            <button
+              onClick={() => onNavigateScreen('SCREEN_12')}
+              className="bg-[#d4a373] hover:bg-white text-[#062e23] px-5 py-3 rounded-2xl font-bold text-xs transition-colors flex items-center gap-2 shadow-md shrink-0"
+            >
+              <Plus size={18} />
+              <span>Tulis & Submit Artikel Baru [SCREEN_12]</span>
+            </button>
+          </div>
+        )}
+
+        {/* Stat Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="bg-white p-6 rounded-2xl border border-[#062e23]/10 shadow-sm space-y-2">
             <div className="flex items-center justify-between text-[#2d5a4c]">
               <span className="text-xs font-bold uppercase tracking-wider">Artikel Dikirim</span>
               <FileText size={18} />
             </div>
-            <div className="text-3xl font-serif font-bold text-[#062e23]">{userSubmissions.length}</div>
-            <div className="text-[11px] text-[#062e23]/70 font-medium">Dalam Antrean / Terbit</div>
+            <div className="text-3xl font-serif font-bold text-[#062e23]">{verificationQueue.length}</div>
+            <div className="text-[11px] text-[#062e23]/70 font-medium">Antrean Verifikasi & Live</div>
           </div>
 
           <div className="bg-white p-6 rounded-2xl border border-[#062e23]/10 shadow-sm space-y-2">
@@ -96,7 +114,7 @@ export const AuthorDashboardView: React.FC<AuthorDashboardViewProps> = ({
               <span className="text-xs font-bold uppercase tracking-wider">Total Sitasi Jurnal</span>
               <Quote size={18} />
             </div>
-            <div className="text-3xl font-serif font-bold text-emerald-800">{user.stats.totalCitations}</div>
+            <div className="text-3xl font-serif font-bold text-emerald-800">{user ? user.stats.totalCitations : 42}</div>
             <div className="text-[11px] text-emerald-700 font-medium">Indeks Google Scholar / DOI</div>
           </div>
 
@@ -105,7 +123,7 @@ export const AuthorDashboardView: React.FC<AuthorDashboardViewProps> = ({
               <span className="text-xs font-bold uppercase tracking-wider">Total Pembaca</span>
               <Eye size={18} />
             </div>
-            <div className="text-3xl font-serif font-bold text-[#062e23]">{user.stats.totalReads.toLocaleString()}</div>
+            <div className="text-3xl font-serif font-bold text-[#062e23]">{user ? user.stats.totalReads.toLocaleString() : '1,890'}</div>
             <div className="text-[11px] text-[#062e23]/70 font-medium">Akses Terbuka</div>
           </div>
 
@@ -114,7 +132,7 @@ export const AuthorDashboardView: React.FC<AuthorDashboardViewProps> = ({
               <span className="text-xs font-bold uppercase tracking-wider text-[#062e23]">Metrik h-Index</span>
               <Award size={18} />
             </div>
-            <div className="text-3xl font-serif font-bold text-[#d4a373]">{user.stats.hIndex}</div>
+            <div className="text-3xl font-serif font-bold text-[#d4a373]">{user ? user.stats.hIndex : 4}</div>
             <div className="text-[11px] text-[#062e23]/70 font-medium">Pengaruh Riset</div>
           </div>
         </div>
@@ -131,7 +149,7 @@ export const AuthorDashboardView: React.FC<AuthorDashboardViewProps> = ({
                     : 'border-transparent text-[#062e23]/50 hover:text-[#062e23]'
                 }`}
               >
-                Status Artikel Karya User ({userSubmissions.length})
+                Status Artikel Karya User ({verificationQueue.length})
               </button>
 
               <button
@@ -163,7 +181,7 @@ export const AuthorDashboardView: React.FC<AuthorDashboardViewProps> = ({
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#062e23]/10">
-                    {userSubmissions.map((sub) => (
+                    {verificationQueue.map((sub) => (
                       <tr key={sub.id} className="hover:bg-[#f9faf6] transition-colors">
                         <td className="p-4 font-serif font-bold text-[#062e23] max-w-xs">
                           <div>{sub.articleTitle}</div>

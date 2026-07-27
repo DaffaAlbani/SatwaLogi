@@ -16,7 +16,6 @@ import {
   SPECIES_DATA, 
   JOURNAL_ARTICLES, 
   ADMIN_VERIFICATION_QUEUE, 
-  CURRENT_USER, 
   Species, 
   UserProfile, 
   JournalArticle, 
@@ -26,9 +25,11 @@ import {
 export function App() {
   const [currentScreenId, setCurrentScreenId] = useState<string>('SCREEN_13');
   const [selectedSpecies, setSelectedSpecies] = useState<Species>(SPECIES_DATA[0]);
-  const [user, setUser] = useState<UserProfile>(CURRENT_USER);
 
-  // Dynamic shared state for user submissions & admin moderation
+  // Initial user state is NULL (Unauthenticated visitor / Guest state)
+  const [user, setUser] = useState<UserProfile | null>(null);
+
+  // Shared state for articles & queue
   const [verificationQueue, setVerificationQueue] = useState<AdminVerificationItem[]>(ADMIN_VERIFICATION_QUEUE);
   const [journalArticles, setJournalArticles] = useState<JournalArticle[]>(JOURNAL_ARTICLES);
   const [activeArticle, setActiveArticle] = useState<JournalArticle>(JOURNAL_ARTICLES[0]);
@@ -49,13 +50,30 @@ export function App() {
     email: string,
     institution: string
   ) => {
-    setUser((prev) => ({
-      ...prev,
-      role: role,
+    setUser({
+      id: `usr-${Math.floor(Math.random() * 900 + 100)}`,
       name: name,
+      title: role === 'Admin' ? 'Dewan Redaksi Admin BRIN' : 'Penulis Kontributor',
+      institution: institution || 'Universitas / Umum',
       email: email,
-      institution: institution
-    }));
+      role: role,
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
+      bio: 'Kontributor aktif Satwalogi.',
+      scientificInterests: ['Ornitologi', 'Konservasi Genetik', 'Mamalogi'],
+      stats: {
+        totalArticles: 1,
+        totalCitations: 12,
+        totalReads: 450,
+        hIndex: 2
+      },
+      bookmarks: []
+    });
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    alert('Anda telah keluar (logout) dari akun. Kembali ke mode pengunjung tamu.');
+    setCurrentScreenId('SCREEN_13');
   };
 
   // User submits a new article from Editor (SCREEN_12) -> enters Admin Verification Queue (SCREEN_14)
@@ -74,7 +92,6 @@ export function App() {
         if (item.id === id) {
           const updatedItem = { ...item, status: newStatus, reviewerNotes: notes };
           
-          // If admin approves, convert and publish directly to live journal feed!
           if (newStatus === 'APPROVED') {
             const publishedJournal: JournalArticle = {
               id: `art-pub-${Math.floor(Math.random() * 1000)}`,
@@ -86,7 +103,7 @@ export function App() {
                   name: item.authorName,
                   institution: item.authorInstitution,
                   role: 'Penulis Utama',
-                  avatar: user.avatar
+                  avatar: user ? user.avatar : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80'
                 }
               ],
               category: item.category,
@@ -205,6 +222,7 @@ export function App() {
         currentScreenId={currentScreenId}
         onNavigateScreen={setCurrentScreenId}
         user={user}
+        onLogout={handleLogout}
       />
 
       <main className="flex-grow">

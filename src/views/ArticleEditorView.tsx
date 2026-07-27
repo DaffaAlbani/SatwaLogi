@@ -12,12 +12,14 @@ import {
   Sparkles, 
   CheckCircle2,
   Table,
-  UserCheck
+  UserCheck,
+  LogIn,
+  AlertCircle
 } from 'lucide-react';
 import { SPECIES_DATA, UserProfile, AdminVerificationItem } from '../data/satwaData';
 
 interface ArticleEditorViewProps {
-  currentUser: UserProfile;
+  currentUser: UserProfile | null;
   onNavigateScreen: (screenId: string) => void;
   onSubmitArticle: (newItem: AdminVerificationItem) => void;
 }
@@ -27,6 +29,8 @@ export const ArticleEditorView: React.FC<ArticleEditorViewProps> = ({
   onNavigateScreen, 
   onSubmitArticle 
 }) => {
+  const [guestName, setGuestName] = useState('Ahmad Fauzi, S.Si.');
+  const [guestInstitution, setGuestInstitution] = useState('Universitas Indonesia');
   const [title, setTitle] = useState('Analisis Kepadatan Sarang & Adaptasi Pongo tapanuliensis Terhadap Variasi Fragmentasi Tajuk');
   const [category, setCategory] = useState('Konservasi Genetik & Bioakustik');
   const [selectedSpecies, setSelectedSpecies] = useState('Pongo tapanuliensis');
@@ -43,6 +47,9 @@ Hasil inventarisasi menunjukkan kepadatan rata-rata 0.68 sarang/km². Tajuk poho
   const [activeTab, setActiveTab] = useState<'WRITE' | 'PREVIEW'>('WRITE');
   const [submittedItem, setSubmittedItem] = useState<AdminVerificationItem | null>(null);
 
+  const authorName = currentUser ? currentUser.name : guestName;
+  const authorInst = currentUser ? currentUser.institution : guestInstitution;
+
   const handleToolbarInsert = (syntax: string) => {
     setArticleBody((prev) => prev + `\n${syntax}`);
   };
@@ -53,8 +60,8 @@ Hasil inventarisasi menunjukkan kepadatan rata-rata 0.68 sarang/km². Tajuk poho
     const newItem: AdminVerificationItem = {
       id: newId,
       articleTitle: title,
-      authorName: currentUser.name,
-      authorInstitution: currentUser.institution,
+      authorName: authorName,
+      authorInstitution: authorInst,
       category: category,
       submittedDate: 'Hari ini (Baru Saja)',
       status: 'PENDING',
@@ -95,22 +102,23 @@ Hasil inventarisasi menunjukkan kepadatan rata-rata 0.68 sarang/km². Tajuk poho
 
           {/* Active Author Info Pill */}
           <div className="flex items-center gap-3">
-            <div className="bg-white border border-[#062e23]/20 px-3.5 py-2 rounded-xl text-xs flex items-center gap-2 shadow-sm">
-              <UserCheck size={16} className="text-[#2d5a4c]" />
-              <div>
-                <span className="font-bold text-[#062e23]">{currentUser.name}</span>
-                <span className="text-[10px] text-[#2d5a4c] block">({currentUser.role})</span>
+            {currentUser ? (
+              <div className="bg-white border border-[#062e23]/20 px-3.5 py-2 rounded-xl text-xs flex items-center gap-2 shadow-sm">
+                <UserCheck size={16} className="text-[#2d5a4c]" />
+                <div>
+                  <span className="font-bold text-[#062e23]">{currentUser.name}</span>
+                  <span className="text-[10px] text-[#2d5a4c] block">({currentUser.role})</span>
+                </div>
               </div>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => alert('Draf artikel berhasil disimpan di penyimpanan lokal.')}
-              className="px-3.5 py-2.5 rounded-xl border border-[#062e23]/20 hover:bg-[#e8ede6] text-xs font-semibold text-[#062e23] flex items-center gap-1.5 transition-colors"
-            >
-              <Save size={15} />
-              <span className="hidden sm:inline">Simpan Draf</span>
-            </button>
+            ) : (
+              <button
+                onClick={() => onNavigateScreen('SCREEN_11')}
+                className="bg-[#062e23] text-[#d4a373] px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm"
+              >
+                <LogIn size={15} />
+                <span>Masuk Akun Pengguna [SCREEN_11]</span>
+              </button>
+            )}
 
             <button
               onClick={() => setActiveTab(activeTab === 'WRITE' ? 'PREVIEW' : 'WRITE')}
@@ -126,6 +134,23 @@ Hasil inventarisasi menunjukkan kepadatan rata-rata 0.68 sarang/km². Tajuk poho
           </div>
         </div>
 
+        {/* Unauthenticated Guest Guest Notice */}
+        {!currentUser && (
+          <div className="bg-[#e8ede6] border border-[#062e23]/20 p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+            <div className="flex items-center gap-2">
+              <AlertCircle size={18} className="text-[#2d5a4c] shrink-0" />
+              <span>Anda belum login. Anda dapat langsung mengirim sebagai <strong>Penulis Tamu</strong> atau <strong>Masuk Portal [SCREEN_11]</strong>.</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => onNavigateScreen('SCREEN_11')}
+              className="bg-[#062e23] text-white px-3.5 py-1.5 rounded-xl font-bold shrink-0 hover:bg-[#1a5948] transition-colors"
+            >
+              Portal Login User / Admin
+            </button>
+          </div>
+        )}
+
         {/* Success Alert Banner if Submitted */}
         {submittedItem && (
           <div className="bg-emerald-900 text-[#f9faf6] p-6 rounded-2xl border border-emerald-700 space-y-3 animate-fadeIn shadow-xl">
@@ -134,7 +159,7 @@ Hasil inventarisasi menunjukkan kepadatan rata-rata 0.68 sarang/km². Tajuk poho
               <span>Naskah Berhasil Dikirim ke Antrean Moderasi Admin (ID: {submittedItem.id})!</span>
             </div>
             <p className="text-xs text-[#e8ede6]/90 leading-relaxed">
-              Artikel karya <strong>{currentUser.name}</strong> berjudul <em>"{submittedItem.articleTitle}"</em> telah masuk ke antrean verifikasi dengan status <span className="text-[#d4a373] font-bold">"PENDING"</span>. Admin sekarang dapat meninjau, menyetujui, atau meminta revisi di panel Admin Verifikasi.
+              Artikel karya <strong>{authorName}</strong> berjudul <em>"{submittedItem.articleTitle}"</em> telah masuk ke antrean verifikasi dengan status <span className="text-[#d4a373] font-bold">"PENDING"</span>. Admin sekarang dapat meninjau, menyetujui, atau meminta revisi di panel Admin Verifikasi.
             </p>
             <div className="pt-2 flex flex-wrap items-center gap-3">
               <button
@@ -155,6 +180,37 @@ Hasil inventarisasi menunjukkan kepadatan rata-rata 0.68 sarang/km². Tajuk poho
 
         {/* Main Form Layout */}
         <form onSubmit={handleSubmitPeerReview} className="space-y-8">
+          {/* Guest Author Profile Details if Not Logged In */}
+          {!currentUser && (
+            <div className="bg-white rounded-2xl p-6 sm:p-8 border border-[#062e23]/10 shadow-sm space-y-4">
+              <h3 className="font-serif text-base font-bold text-[#062e23] border-b border-[#062e23]/10 pb-2">
+                Identitas Penulis Artikel
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-[#2d5a4c] mb-1">Nama Lengkap Penulis *</label>
+                  <input
+                    type="text"
+                    value={guestName}
+                    onChange={(e) => setGuestName(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl border border-[#062e23]/20 bg-[#f9faf6] text-xs font-semibold text-[#062e23]"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-[#2d5a4c] mb-1">Institusi / Universitas *</label>
+                  <input
+                    type="text"
+                    value={guestInstitution}
+                    onChange={(e) => setGuestInstitution(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl border border-[#062e23]/20 bg-[#f9faf6] text-xs font-semibold text-[#062e23]"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Metadata Section */}
           <div className="bg-white rounded-2xl p-6 sm:p-8 border border-[#062e23]/10 shadow-sm space-y-6">
             <h3 className="font-serif text-lg font-bold text-[#062e23] border-b border-[#062e23]/10 pb-3 flex items-center gap-2">
@@ -262,7 +318,7 @@ Hasil inventarisasi menunjukkan kepadatan rata-rata 0.68 sarang/km². Tajuk poho
               <span className="h-5 w-px bg-[#062e23]/20 mx-1"></span>
               <button
                 type="button"
-                onClick={() => handleToolbarInsert(`[Sitasi: ${currentUser.name.split(' ')[1] || currentUser.name}, 2026]`)}
+                onClick={() => handleToolbarInsert(`[Sitasi: ${authorName.split(' ')[1] || authorName}, 2026]`)}
                 className="p-2 hover:bg-[#062e23]/10 rounded font-semibold text-[#2d5a4c] flex items-center gap-1"
                 title="Insert Citation Tag"
               >
@@ -303,7 +359,7 @@ Hasil inventarisasi menunjukkan kepadatan rata-rata 0.68 sarang/km². Tajuk poho
               <div className="p-8 bg-[#f9faf6] space-y-6 font-serif leading-relaxed">
                 <div className="p-4 bg-[#e8ede6] rounded-xl text-xs font-sans font-bold text-[#2d5a4c] flex items-center justify-between">
                   <span>[LIVE PREVIEW MODERASI REDAKSI]</span>
-                  <span>Penulis: {currentUser.name}</span>
+                  <span>Penulis: {authorName}</span>
                 </div>
                 <h2 className="text-3xl font-bold text-[#062e23]">{title}</h2>
                 <div className="text-xs font-sans text-[#2d5a4c]">
@@ -323,7 +379,7 @@ Hasil inventarisasi menunjukkan kepadatan rata-rata 0.68 sarang/km². Tajuk poho
           <div className="bg-[#062e23] text-[#e8ede6] p-6 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4 border border-[#d4a373]/30 shadow-xl">
             <div className="space-y-1 text-center sm:text-left">
               <div className="font-serif font-bold text-base text-[#d4a373]">
-                Kirim Naskah Karya {currentUser.name} ke Verifikasi Admin?
+                Kirim Naskah Karya {authorName} ke Verifikasi Admin?
               </div>
               <p className="text-xs text-[#b4d7cd]">
                 Setelah dikirim, naskah akan langsung muncul di antrean moderasi Admin Verifikasi [SCREEN_14].

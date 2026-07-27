@@ -5,31 +5,25 @@ import {
   Shield, 
   Bell, 
   Tag, 
-  Key, 
   Save, 
-  Check, 
-  Sparkles, 
-  Bookmark, 
-  Lock, 
-  Mail, 
-  Building,
+  LogIn,
   CheckCircle2
 } from 'lucide-react';
 import { UserProfile } from '../data/satwaData';
 
 interface AccountSettingsViewProps {
-  user: UserProfile;
+  user: UserProfile | null;
   onNavigateScreen: (screenId: string) => void;
 }
 
 export const AccountSettingsView: React.FC<AccountSettingsViewProps> = ({ user, onNavigateScreen }) => {
   const [activeSubTab, setActiveSubTab] = useState<'PROFIL' | 'MINAT' | 'KEAMANAN' | 'NOTIFIKASI'>('PROFIL');
-  const [name, setName] = useState(user.name);
-  const [title, setTitle] = useState(user.title);
-  const [institution, setInstitution] = useState(user.institution);
-  const [bio, setBio] = useState(user.bio);
+  const [name, setName] = useState(user ? user.name : 'Ahmad Fauzi, S.Si.');
+  const [title, setTitle] = useState(user ? user.title : 'Peneliti Terkait Satwa');
+  const [institution, setInstitution] = useState(user ? user.institution : 'Universitas Indonesia');
+  const [bio, setBio] = useState(user ? user.bio : 'Peneliti biosistemasi dan konservasi megafauna Indonesia.');
   
-  const [selectedInterests, setSelectedInterests] = useState<string[]>(user.scientificInterests);
+  const [selectedInterests, setSelectedInterests] = useState<string[]>(user ? user.scientificInterests : ['Ornitologi', 'Mamalogi']);
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(true);
   const [notifyPeerReview, setNotifyPeerReview] = useState(true);
   const [notifyJournalPublish, setNotifyJournalPublish] = useState(true);
@@ -77,9 +71,26 @@ export const AccountSettingsView: React.FC<AccountSettingsViewProps> = ({ user, 
             <span>Manajemen Profil Akademis & Preferensi</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#062e23] mt-1">
-            Pengaturan Akun Kontributor
+            Pengaturan Akun Pengguna
           </h1>
         </div>
+
+        {/* Guest alert if not logged in */}
+        {!user && (
+          <div className="bg-[#062e23] text-[#e8ede6] p-6 rounded-3xl border border-[#d4a373]/30 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
+            <div className="space-y-1">
+              <h3 className="font-serif font-bold text-base text-[#d4a373]">Anda Belum Masuk Akun</h3>
+              <p className="text-xs text-[#b4d7cd]">Masuk sebagai User Biasa atau Admin untuk menyimpan profil dan minat saintifik secara permanen.</p>
+            </div>
+            <button
+              onClick={() => onNavigateScreen('SCREEN_11')}
+              className="bg-[#d4a373] text-[#062e23] px-5 py-2 rounded-xl text-xs font-bold hover:bg-white transition-colors flex items-center gap-2 shrink-0"
+            >
+              <LogIn size={15} />
+              <span>Masuk / Daftar Portal [SCREEN_11]</span>
+            </button>
+          </div>
+        )}
 
         {/* Success Banner */}
         {savedSuccess && (
@@ -156,8 +167,8 @@ export const AccountSettingsView: React.FC<AccountSettingsViewProps> = ({ user, 
                   {/* Avatar Upload Preview */}
                   <div className="flex items-center gap-6">
                     <img
-                      src={user.avatar}
-                      alt={user.name}
+                      src={user ? user.avatar : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80'}
+                      alt="Avatar"
                       className="w-20 h-20 rounded-2xl object-cover border-2 border-[#062e23]/20"
                     />
                     <div className="space-y-1">
