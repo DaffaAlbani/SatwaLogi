@@ -142,6 +142,7 @@ export function App() {
       case 'SCREEN_13':
         return (
           <HomeView
+            journalArticles={journalArticles}
             onSelectSpecies={handleSelectSpecies}
             onNavigateScreen={setCurrentScreenId}
           />
@@ -209,6 +210,7 @@ export function App() {
       default:
         return (
           <HomeView
+            journalArticles={journalArticles}
             onSelectSpecies={handleSelectSpecies}
             onNavigateScreen={setCurrentScreenId}
           />

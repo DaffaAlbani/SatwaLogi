@@ -278,120 +278,11 @@ export const SPECIES_DATA: Species[] = [
   }
 ];
 
-export const JOURNAL_ARTICLES: JournalArticle[] = [
-  {
-    id: "art-101",
-    doi: "10.1038/s41559-026-02104-x",
-    title: "Filogeografi dan Variasi Genomik Populasi Panthera tigris sumatrae di Lanskap Leuser dan Kerinci Seblat",
-    abstract: "Studi ini menganalisis urutan genomik utuh (whole-genome sequencing) dari 64 sampel non-invasif Panthera tigris sumatrae untuk mengevaluasi tingkat aliran gen (gene flow), koefisien perkawinan sedarah (inbreeding depression), dan kerentanan garis keturunan terhadap penyempitan habitat tropis.",
-    authors: [
-      {
-        name: "Dr. Pratama Kusuma, M.Sc.",
-        institution: "Pusat Riset Biosistemasi & Evolusi BRIN",
-        role: "Penulis Utama",
-        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
-      },
-      {
-        name: "Prof. Eleanor Vance, Ph.D.",
-        institution: "Department of Evolutionary Biology, Cambridge University",
-        role: "Ko-Penulis",
-        avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&q=80"
-      }
-    ],
-    category: "Konservasi Genetik",
-    tags: ["Panthera tigris", "Genomik", "Hutan Tropis", "BRIN", "Bioinformatika"],
-    publishedDate: "14 Mei 2026",
-    readTime: "12 menit baca",
-    citationsCount: 42,
-    viewsCount: 1890,
-    pdfSize: "2.4 MB",
-    peerReviewed: true,
-    content: {
-      introduction: "Keberlanjutan populasi Harimau Sumatra (Panthera tigris sumatrae) berada pada titik kritis akibat isolasi geografis yang dipicu oleh alih fungsi lahan hutan. Pemahaman komprehensif mengenai tingkat keanekaragaman genetik dan koefisien perataan alel mutasi sangat diperlukan untuk merumuskan intervensi translokasi individu yang tepat sasaran [1].",
-      methodology: "Kami mengumpulkan sampel feses dan bulu non-invasif dari lanskap Ekosistem Leuser (n=36) dan Taman Nasional Kerinci Seblat (n=28) menggunakan metode pelacakan Smart Patrol selama rentang waktu 2023–2025. DNA diekstraksi menggunakan kit daur ulang silika standar dan diurutkan menggunakan platform Illumina NovaSeq 6000 dengan kedalaman pembacaan rata-rata 30x [2].",
-      results: "Analisis komponen utama (PCA) dan STRUCTURE menunjukkan pemisahan sub-populasi yang signifikan antara blok utara Leuser dan blok selatan Kerinci Seblat (FST = 0.142, p < 0.001). Koefisien inbreeding (FROH) pada populasi Kerinci Seblat tercatat 18.4% lebih tinggi dibandingkan populasi Leuser, yang berkorelasi langsung dengan penurunan variabilitas lokus MHC kelas II [3].",
-      discussion: "Temuan ini mengonfirmasi bahwa koridor ekologi penghubung antara lanskap Kerinci dan Leuser telah terputus total selama lebih dari 3 dekade. Tanpa adanya tindakan pembuatan koridor hijau berbasis restorasi vegetasi tajuk rapat, risiko kelelahan genomik dan kerentanan wabah penyakit seperti Canine Distemper Virus (CDV) diproyeksikan meningkat hingga 65% pada tahun 2040 [4].",
-      conclusion: "Rekomendasi strategis kami mencakup penguatan perlindungan koridor Bukit Barisan Selatan, pembentukan bank sperma cryopreservation satwa liar nasional, dan translokasi individu jantan terpilih berbasis profil SNP untuk memperkaya keanekaragaman alel."
-    },
-    references: [
-      { id: 1, text: "Kusuma, P., et al. (2024). Conservation Genomics of Sumatran Megafauna. Journal of Biodiversity, 12(4), 405-418.", doi: "10.1016/j.jbio.2024.08.003" },
-      { id: 2, text: "Vance, E., & Suryadi, H. (2023). High-Throughput Non-Invasive Sequencing in Tropical Rain Forests. Molecular Ecology Resources, 23(1), 112-129.", doi: "10.1111/1755-0998.13680" },
-      { id: 3, text: "Balai Besar TNKS & WCS. (2025). Laporan Konservasi Populasi Harimau Sumatra Kerinci Seblat. Publikasi Resmi Kementerian LHK.", doi: "10.5281/zenodo.7891234" },
-      { id: 4, text: "Riyanto, A., et al. (2025). Pathogen Vulnerability in Fragmented Carnivore Populations. Nature Ecology & Evolution, 9(2), 230-245.", doi: "10.1038/s41559-025-01890-w" }
-    ]
-  },
-  {
-    id: "art-102",
-    doi: "10.1016/j.biocon.2026.109822",
-    title: "Akustik Pasif dan Pola Aktivitas Nokturnal Orangutan Tapanuli (Pongo tapanuliensis) di Blok Hutan Batang Toru",
-    abstract: "Penggunaan Passive Acoustic Monitoring (PAM) dalam memetakan frekuensi vokalisasi 'Long Call' jantan Pongo tapanuliensis untuk mengukur kepadatan populasi tanpa mengganggu struktur sosial kanopi tropis.",
-    authors: [
-      {
-        name: "Nirmala Rahmadani, Ph.D.",
-        institution: "Fakultas Kehutanan Universitas Gadjah Mada",
-        role: "Penulis Utama",
-        avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80"
-      }
-    ],
-    category: "Bioakustik & Ekologi Behavior",
-    tags: ["Pongo tapanuliensis", "Bioakustik", "Batang Toru", "Monitoring Pasif"],
-    publishedDate: "02 April 2026",
-    readTime: "9 menit baca",
-    citationsCount: 19,
-    viewsCount: 1420,
-    pdfSize: "1.8 MB",
-    peerReviewed: true,
-    content: {
-      introduction: "Orangutan Tapanuli merupakan spesies kera besar paling terancam di dunia. Metode inventarisasi sarang konvensional sering kali menghasilkan bias estimasi pada medan pegunungan yang sangat curam seperti Batang Toru.",
-      methodology: "Kami memasang 48 sensor perekam akustik Audiomoth v1.2 di ketinggian kanopi 15-25 meter selama 180 hari berturut-turut. Algoritma Convolutional Neural Network (CNN) dilatih khusus untuk mengidentifikasi harmonik khas vokalisasi Pongo tapanuliensis.",
-      results: "Puncak aktivitas Long Call terdeteksi pada pukul 04:30 - 06:00 WIB dan 17:00 - 18:30 WIB. Kepadatan panggilan bernilai tertinggi pada elevasi 900–1.100 mdpl.",
-      discussion: "Gangguan suara mesin konstruksi dari area sekitar terbukti menggeser frekuensi panggilan jantan sebesar +150 Hz dan mereduksi jarak jangkauan komunikasi hingga 40%.",
-      conclusion: "PAM terbukti efektif sebagai instrumen audit lingkungan real-time untuk mengevaluasi ambang batas kebisingan industri di sekitar habitat kritis."
-    },
-    references: [
-      { id: 1, text: "Rahmadani, N., et al. (2025). Passive Acoustic Monitoring in Tropical Primate Studies. Bioacoustics Journal, 34(3), 201-219.", doi: "10.1080/09524622.2025.109822" }
-    ]
-  }
-];
+// Empty pre-loaded articles array so only user written articles will appear!
+export const JOURNAL_ARTICLES: JournalArticle[] = [];
 
-export const ADMIN_VERIFICATION_QUEUE: AdminVerificationItem[] = [
-  {
-    id: "ver-201",
-    articleTitle: "Evaluasi Populasi Bawah Laut Penyu Hijau (Chelonia mydas) di Kawasan Padang Lamun Kepulauan Derawan",
-    authorName: "Dr. Aris Setyawan, M.Si.",
-    authorInstitution: "Institut Pertanian Bogor (IPB University)",
-    category: "Biologi Kelautan & Konservasi",
-    submittedDate: "25 Juli 2026",
-    status: "PENDING",
-    plagiarismScore: 1.8,
-    taxonomyAccuracyScore: 99.2,
-    citationsVerified: true,
-    abstractText: "Penelitian ini mengukur kepadatan individu dan laju konsumsi padang lamun Thalassia hemprichii oleh populasi juvenile Chelonia mydas di perairan Karang Muaras, Derawan. Hasil survei transek kuadrat menunjukkan peningkatan frekuensi makan pada pasut perbani.",
-    previewSnippet: "Padang lamun Kepulauan Derawan memegang peranan krusial sebagai nursery ground bagi penyu hijau. Berdasarkan pemetaan drone bawah air dan foto-ID karapas...",
-    reviewerNotes: "Naskah sangat komprehensif. Perlu pengecekan format koordinat GPS transek pada tabel 3 sebelum publikasi final.",
-    fullBody: "Padang lamun Kepulauan Derawan memegang peranan krusial sebagai nursery ground bagi penyu hijau. Berdasarkan pemetaan drone bawah air dan foto-ID karapas, kami mengukur kepadatan individu 3.4 individu/hektar.",
-    tags: ["Chelonia mydas", "Padang Lamun", "Derawan", "Konservasi Laut"],
-    speciesTag: "Chelonia mydas"
-  },
-  {
-    id: "ver-202",
-    articleTitle: "Analisis Respon Stres Hormon Kortisol Pada Jalak Bali (Leucopsar rothschildi) Pascalelepasliaran ex-situ",
-    authorName: "Siti Rahmawati, S.Si., M.Biol.",
-    authorInstitution: "Universitas Udayana Bali",
-    category: "Fisiologi Satwa Liar",
-    submittedDate: "22 Juli 2026",
-    status: "REVISION_NEEDED",
-    plagiarismScore: 4.2,
-    taxonomyAccuracyScore: 96.5,
-    citationsVerified: false,
-    abstractText: "Pengukuran kadar kortisol feses dilakukan pada 12 individu Jalak Bali yang dilepasliarkan di TNBB untuk mengevaluasi adaptasi terhadap predator alami.",
-    previewSnippet: "Pengambilan sampel feses harian menunjukkan lonjakan kadar metabolit kortisosteroid pada 7 hari pertama pasca peluncuran...",
-    reviewerNotes: "Terdapat 2 sitasi jurnal tahun 2011 yang tidak tercantum DOI-nya pada daftar referensi. Mohon perbaiki dan submit ulang.",
-    fullBody: "Pengambilan sampel feses harian menunjukkan lonjakan kadar metabolit kortisosteroid pada 7 hari pertama pasca pelepasliaran. Kadar ini melandai kembali mendekati normal pada minggu ke-3.",
-    tags: ["Leucopsar rothschildi", "Jalak Bali", "Kortisol", "Fisiologi"],
-    speciesTag: "Leucopsar rothschildi"
-  }
-];
+// Empty pre-loaded verification queue array so only user written articles will appear!
+export const ADMIN_VERIFICATION_QUEUE: AdminVerificationItem[] = [];
 
 export const CURRENT_USER: UserProfile = {
   id: "usr-888",
@@ -407,14 +298,13 @@ export const CURRENT_USER: UserProfile = {
     "Konservasi Genetik",
     "Bioakustik",
     "Mamalogi",
-    "Herpetologi Indonesia",
-    "GIS & Pemetaan Habitat"
+    "Herpetologi Indonesia"
   ],
   stats: {
-    totalArticles: 14,
-    totalCitations: 382,
-    totalReads: 18450,
-    hIndex: 9
+    totalArticles: 0,
+    totalCitations: 0,
+    totalReads: 0,
+    hIndex: 0
   },
-  bookmarks: ["art-101", "art-102"]
+  bookmarks: []
 };

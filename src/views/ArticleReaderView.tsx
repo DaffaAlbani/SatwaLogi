@@ -1,31 +1,29 @@
 import React, { useState } from 'react';
 import { 
   BookOpen, 
-  FileText, 
   Download, 
-  Share2, 
   Bookmark, 
   Quote, 
-  CheckCircle2, 
   Columns, 
   Sun, 
   Moon, 
   Type, 
   ExternalLink,
   ShieldCheck,
-  ChevronRight,
   ArrowLeft,
-  X
+  X,
+  PenTool,
+  User
 } from 'lucide-react';
-import { JOURNAL_ARTICLES, JournalArticle } from '../data/satwaData';
+import { JournalArticle } from '../data/satwaData';
 
 interface ArticleReaderViewProps {
-  article?: JournalArticle;
+  article?: JournalArticle | null;
   onNavigateScreen: (screenId: string) => void;
 }
 
 export const ArticleReaderView: React.FC<ArticleReaderViewProps> = ({ 
-  article = JOURNAL_ARTICLES[0], 
+  article, 
   onNavigateScreen 
 }) => {
   const [fontSize, setFontSize] = useState<'normal' | 'large' | 'xlarge'>('normal');
@@ -54,6 +52,27 @@ export const ArticleReaderView: React.FC<ArticleReaderViewProps> = ({
   const openCitation = (id: number) => {
     setActiveCitation(id);
   };
+
+  if (!article) {
+    return (
+      <div className="min-h-[70vh] flex flex-col items-center justify-center p-6 text-center space-y-4">
+        <div className="w-16 h-16 rounded-2xl bg-[#e8ede6] text-[#062e23] flex items-center justify-center text-3xl shadow-sm">
+          📚
+        </div>
+        <h2 className="text-2xl font-serif font-bold text-[#062e23]">Belum Ada Artikel Ilmiah Terpilih</h2>
+        <p className="text-xs text-[#2d5a4c] max-w-md leading-relaxed">
+          Semua sampel artikel telah dibersihkan. Tulis naskah baru di Editor Artikel dan kirimkan ke verifikasi admin untuk diterbitkan di sini!
+        </p>
+        <button
+          onClick={() => onNavigateScreen('SCREEN_12')}
+          className="bg-[#062e23] text-[#d4a373] hover:bg-[#1a5948] px-5 py-2.5 rounded-xl text-xs font-bold transition-colors inline-flex items-center gap-2 shadow-md"
+        >
+          <PenTool size={16} />
+          <span>Tulis Artikel Baru</span>
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${getThemeClass()} pb-24`}>
@@ -136,7 +155,7 @@ export const ArticleReaderView: React.FC<ArticleReaderViewProps> = ({
             </span>
             <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-800 text-white text-xs font-semibold">
               <ShieldCheck size={14} />
-              <span>Peer-Reviewed BRIN</span>
+              <span>Peer-Reviewed Admin</span>
             </span>
             <span className="text-xs opacity-70 font-mono">DOI: {article.doi}</span>
           </div>
@@ -145,8 +164,8 @@ export const ArticleReaderView: React.FC<ArticleReaderViewProps> = ({
             {article.title}
           </h1>
 
-          {/* Authors List */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-4 border-y border-current/10">
+          {/* Authors List prominently showing Author Name */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-4 border-y border-current/10 bg-black/5 p-4 rounded-2xl">
             {article.authors.map((auth, idx) => (
               <div key={idx} className="flex items-center gap-3">
                 <img
@@ -155,9 +174,11 @@ export const ArticleReaderView: React.FC<ArticleReaderViewProps> = ({
                   className="w-11 h-11 rounded-full object-cover border border-current/20"
                 />
                 <div>
-                  <div className="font-serif font-bold text-sm">{auth.name}</div>
-                  <div className="text-xs opacity-75">{auth.institution}</div>
-                  <div className="text-[11px] text-[#d4a373] font-semibold">{auth.role}</div>
+                  <div className="font-serif font-bold text-sm">
+                    Penulis Utama: <span className="text-[#d4a373]">{auth.name}</span>
+                  </div>
+                  <div className="text-xs opacity-80">{auth.institution}</div>
+                  <div className="text-[11px] font-semibold opacity-70">{auth.role}</div>
                 </div>
               </div>
             ))}
@@ -226,7 +247,7 @@ export const ArticleReaderView: React.FC<ArticleReaderViewProps> = ({
             {/* Section 1: Introduction */}
             <div className="space-y-3 break-inside-avoid">
               <h2 className="font-sans text-xl font-bold text-[#2d5a4c] border-b border-current/10 pb-1">
-                1. Pendahuluan
+                1. Pendahuluan & Tinjauan
               </h2>
               <p>
                 {article.content.introduction}
@@ -244,21 +265,6 @@ export const ArticleReaderView: React.FC<ArticleReaderViewProps> = ({
               </h2>
               <p>
                 {article.content.methodology}
-                {' '}
-                <button onClick={() => openCitation(2)} className="citation-link font-sans text-xs px-1">
-                  [2]
-                </button>
-              </p>
-            </div>
-
-            {/* Figure / Chart Embed */}
-            <div className="my-6 p-4 rounded-2xl border border-current/20 bg-white/40 dark:bg-black/40 break-inside-avoid text-center space-y-2 font-sans">
-              <div className="h-48 bg-[#062e23] rounded-xl flex flex-col items-center justify-center text-[#d4a373] p-4">
-                <BookOpen size={36} />
-                <span className="text-xs font-bold mt-2">[Grafik 1: Distribusi Variasi Genomik & Struktur FST Populasi]</span>
-              </div>
-              <p className="text-xs opacity-75 italic">
-                Gambar 1. Pemetaan Principal Component Analysis (PCA) lokus SNP Panthera tigris sumatrae (Kusuma et al., 2026).
               </p>
             </div>
 
@@ -269,31 +275,23 @@ export const ArticleReaderView: React.FC<ArticleReaderViewProps> = ({
               </h2>
               <p>
                 {article.content.results}
-                {' '}
-                <button onClick={() => openCitation(3)} className="citation-link font-sans text-xs px-1">
-                  [3]
-                </button>
               </p>
             </div>
 
             {/* Section 4: Discussion */}
             <div className="space-y-3 break-inside-avoid">
               <h2 className="font-sans text-xl font-bold text-[#2d5a4c] border-b border-current/10 pb-1">
-                4. Diskusi
+                4. Diskusi & Rekomendasi
               </h2>
               <p>
                 {article.content.discussion}
-                {' '}
-                <button onClick={() => openCitation(4)} className="citation-link font-sans text-xs px-1">
-                  [4]
-                </button>
               </p>
             </div>
 
             {/* Section 5: Conclusion */}
             <div className="space-y-3 break-inside-avoid">
               <h2 className="font-sans text-xl font-bold text-[#2d5a4c] border-b border-current/10 pb-1">
-                5. Kesimpulan & Rekomendasi Konservasi
+                5. Kesimpulan
               </h2>
               <p>
                 {article.content.conclusion}
@@ -301,45 +299,47 @@ export const ArticleReaderView: React.FC<ArticleReaderViewProps> = ({
             </div>
           </div>
 
-          {/* References & Footnotes List */}
-          <section className="mt-16 pt-8 border-t-2 border-current/20 space-y-6">
-            <div className="flex items-center justify-between">
-              <h3 className="font-sans text-lg font-bold uppercase tracking-wider text-[#2d5a4c]">
-                Daftar Pustaka & Sitasi (References)
-              </h3>
-              <span className="text-xs opacity-75">{article.references.length} Referensi Terverifikasi</span>
-            </div>
+          {/* References List */}
+          {article.references && article.references.length > 0 && (
+            <section className="mt-16 pt-8 border-t-2 border-current/20 space-y-6">
+              <div className="flex items-center justify-between">
+                <h3 className="font-sans text-lg font-bold uppercase tracking-wider text-[#2d5a4c]">
+                  Daftar Pustaka & Sitasi (References)
+                </h3>
+                <span className="text-xs opacity-75">{article.references.length} Referensi Terverifikasi</span>
+              </div>
 
-            <div className="space-y-3 font-sans text-xs">
-              {article.references.map((ref) => (
-                <div
-                  key={ref.id}
-                  id={`ref-${ref.id}`}
-                  className={`p-3 rounded-xl border transition-all ${
-                    activeCitation === ref.id
-                      ? 'bg-[#d4a373]/20 border-[#d4a373] font-semibold'
-                      : 'border-current/10 bg-black/5'
-                  }`}
-                >
-                  <div className="flex items-start gap-2">
-                    <span className="font-bold text-[#2d5a4c]">[{ref.id}]</span>
-                    <div className="space-y-1">
-                      <p>{ref.text}</p>
-                      <a
-                        href={`https://doi.org/${ref.doi}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-1 text-[#2d5a4c] hover:underline font-mono text-[11px]"
-                      >
-                        <span>https://doi.org/{ref.doi}</span>
-                        <ExternalLink size={12} />
-                      </a>
+              <div className="space-y-3 font-sans text-xs">
+                {article.references.map((ref) => (
+                  <div
+                    key={ref.id}
+                    id={`ref-${ref.id}`}
+                    className={`p-3 rounded-xl border transition-all ${
+                      activeCitation === ref.id
+                        ? 'bg-[#d4a373]/20 border-[#d4a373] font-semibold'
+                        : 'border-current/10 bg-black/5'
+                    }`}
+                  >
+                    <div className="flex items-start gap-2">
+                      <span className="font-bold text-[#2d5a4c]">[{ref.id}]</span>
+                      <div className="space-y-1">
+                        <p>{ref.text}</p>
+                        <a
+                          href={`https://doi.org/${ref.doi}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1 text-[#2d5a4c] hover:underline font-mono text-[11px]"
+                        >
+                          <span>https://doi.org/{ref.doi}</span>
+                          <ExternalLink size={12} />
+                        </a>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </section>
+                ))}
+              </div>
+            </section>
+          )}
         </div>
       </div>
 
@@ -358,21 +358,8 @@ export const ArticleReaderView: React.FC<ArticleReaderViewProps> = ({
               <div>
                 <label className="font-bold text-[#2d5a4c]">Format APA (7th Edition):</label>
                 <div className="p-3 bg-[#e8ede6] rounded-xl font-serif text-[11px] mt-1 select-all">
-                  {article.authors[0].name}. (2026). {article.title}. <i>Jurnal Satwalogi Indonesia</i>, 14(2), 104-122. https://doi.org/{article.doi}
+                  {article.authors[0].name}. (2026). {article.title}. <i>Jurnal Satwalogi Indonesia</i>. https://doi.org/{article.doi}
                 </div>
-              </div>
-
-              <div>
-                <label className="font-bold text-[#2d5a4c]">Format BibTeX:</label>
-                <pre className="p-3 bg-[#062e23] text-[#e8ede6] rounded-xl text-[10px] font-mono mt-1 overflow-x-auto">
-{`@article{satwalogi2026,
-  author = {${article.authors[0].name}},
-  title = {${article.title}},
-  journal = {Jurnal Satwalogi},
-  year = {2026},
-  doi = {${article.doi}}
-}`}
-                </pre>
               </div>
             </div>
 

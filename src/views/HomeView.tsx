@@ -6,18 +6,24 @@ import {
   ArrowRight, 
   Sparkles, 
   ChevronRight,
-  ExternalLink,
   ShieldCheck,
-  Compass
+  Compass,
+  PenTool,
+  User
 } from 'lucide-react';
-import { SPECIES_DATA, JOURNAL_ARTICLES, Species } from '../data/satwaData';
+import { SPECIES_DATA, JournalArticle, Species } from '../data/satwaData';
 
 interface HomeViewProps {
+  journalArticles: JournalArticle[];
   onSelectSpecies: (species: Species) => void;
   onNavigateScreen: (screenId: string) => void;
 }
 
-export const HomeView: React.FC<HomeViewProps> = ({ onSelectSpecies, onNavigateScreen }) => {
+export const HomeView: React.FC<HomeViewProps> = ({ 
+  journalArticles, 
+  onSelectSpecies, 
+  onNavigateScreen 
+}) => {
   const [selectedClass, setSelectedClass] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [activeAudioId, setActiveAudioId] = useState<string | null>(null);
@@ -50,8 +56,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectSpecies, onNavigateS
 
   return (
     <div className="space-y-10 sm:space-y-16 pb-16 sm:pb-20">
-
-      {/* Hero Section with Mobile Optimized Padding & Typography */}
+      {/* Hero Section */}
       <section className="relative overflow-hidden bg-[#062e23] text-[#f9faf6] py-12 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 border-b border-[#d4a373]/20 shadow-xl">
         <div className="absolute top-0 right-0 -mt-12 -mr-12 w-72 sm:w-96 h-72 sm:h-96 bg-[#2d5a4c]/30 rounded-full blur-3xl pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 -mb-16 -ml-16 w-60 sm:w-80 h-60 sm:h-80 bg-[#d4a373]/10 rounded-full blur-2xl pointer-events-none"></div>
@@ -67,10 +72,10 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectSpecies, onNavigateS
           </h1>
 
           <p className="text-xs sm:text-base lg:text-lg text-[#e8ede6]/90 max-w-3xl mx-auto font-sans leading-relaxed">
-            Menghubungkan peneliti, akademisi, dan publik dengan taksonomi komprehensif, sebaran habitat, serta jurnal ilmiah terverifikasi.
+            Platform publikasi ilmiah tempat Anda dapat menulis artikel riset satwa, mengirimkan untuk verifikasi admin, dan menerbitkan karya ilmiah secara terbuka.
           </p>
 
-          {/* Responsive Search Bar */}
+          {/* Search Bar */}
           <div className="pt-2 sm:pt-4 max-w-2xl mx-auto">
             <div className="relative flex flex-col sm:flex-row items-stretch sm:items-center bg-[#f9faf6] rounded-2xl shadow-2xl p-1.5 sm:p-2 border-2 border-[#d4a373]/40 focus-within:border-[#d4a373] transition-all gap-2">
               <div className="flex items-center flex-1 px-2">
@@ -91,15 +96,6 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectSpecies, onNavigateS
                 <ChevronRight size={14} />
               </button>
             </div>
-            
-            <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mt-3 text-[11px] text-[#b4d7cd]">
-              <span className="font-semibold text-[#d4a373]">Populer:</span>
-              <button onClick={() => setSearchQuery('Panthera')} className="hover:underline text-[#e8ede6]">Panthera tigris</button>
-              <span>•</span>
-              <button onClick={() => setSearchQuery('Pongo')} className="hover:underline text-[#e8ede6]">Pongo tapanuliensis</button>
-              <span>•</span>
-              <button onClick={() => setSearchQuery('Bali')} className="hover:underline text-[#e8ede6]">Jalak Bali</button>
-            </div>
           </div>
         </div>
       </section>
@@ -112,8 +108,8 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectSpecies, onNavigateS
             <div className="text-[10px] sm:text-xs font-semibold text-[#2d5a4c] uppercase tracking-wider mt-0.5">Spesies Satwa</div>
           </div>
           <div className="p-2 sm:border-r border-[#062e23]/10">
-            <div className="font-serif text-2xl sm:text-3xl font-bold text-[#062e23]">1,280+</div>
-            <div className="text-[10px] sm:text-xs font-semibold text-[#2d5a4c] uppercase tracking-wider mt-0.5">Jurnal Riset</div>
+            <div className="font-serif text-2xl sm:text-3xl font-bold text-[#062e23]">{journalArticles.length}</div>
+            <div className="text-[10px] sm:text-xs font-semibold text-[#2d5a4c] uppercase tracking-wider mt-0.5">Jurnal Terbit User</div>
           </div>
           <div className="p-2 border-r border-[#062e23]/10">
             <div className="font-serif text-2xl sm:text-3xl font-bold text-[#062e23]">310</div>
@@ -121,7 +117,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectSpecies, onNavigateS
           </div>
           <div className="p-2">
             <div className="font-serif text-2xl sm:text-3xl font-bold text-[#d4a373]">100%</div>
-            <div className="text-[10px] sm:text-xs font-semibold text-[#062e23] uppercase tracking-wider mt-0.5">Peer-Reviewed</div>
+            <div className="text-[10px] sm:text-xs font-semibold text-[#062e23] uppercase tracking-wider mt-0.5">Peer-Reviewed Admin</div>
           </div>
         </div>
       </section>
@@ -139,7 +135,6 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectSpecies, onNavigateS
             </h2>
           </div>
 
-          {/* Taxonomy Class Filter Tabs */}
           <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar">
             {['ALL', 'MAMMALIA', 'AVES', 'REPTILIA'].map((cls) => (
               <button
@@ -157,14 +152,12 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectSpecies, onNavigateS
           </div>
         </div>
 
-        {/* Species Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {filteredSpecies.map((species) => (
             <div
               key={species.id}
               className="bg-white rounded-2xl overflow-hidden border border-[#062e23]/10 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group"
             >
-              {/* Card Image */}
               <div className="relative h-52 sm:h-60 overflow-hidden bg-slate-900">
                 <img
                   src={species.imageUrl}
@@ -173,7 +166,6 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectSpecies, onNavigateS
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20"></div>
 
-                {/* IUCN Badge */}
                 <div className="absolute top-3 left-3 flex items-center gap-1">
                   <span className={`px-2.5 py-0.5 rounded-md text-[10px] sm:text-[11px] font-bold tracking-wider ${iucnBadgeColor(species.iucnStatus)}`}>
                     {species.iucnStatus}
@@ -183,7 +175,6 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectSpecies, onNavigateS
                   </span>
                 </div>
 
-                {/* Audio vocalization play button */}
                 {species.audioUrl && (
                   <button
                     onClick={(e) => {
@@ -202,7 +193,6 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectSpecies, onNavigateS
                 )}
               </div>
 
-              {/* Audio player active notice */}
               {activeAudioId === species.id && (
                 <div className="bg-[#062e23] text-[#e8ede6] text-[11px] px-3.5 py-1.5 flex items-center justify-between border-t border-[#d4a373]/30">
                   <div className="flex items-center gap-2 truncate">
@@ -213,7 +203,6 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectSpecies, onNavigateS
                 </div>
               )}
 
-              {/* Card Body */}
               <div className="p-5 sm:p-6 space-y-4 flex-1 flex flex-col justify-between">
                 <div>
                   <div className="text-[11px] text-[#2d5a4c] font-semibold italic">
@@ -249,76 +238,104 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectSpecies, onNavigateS
         </div>
       </section>
 
-      {/* Latest Journal Articles Section */}
+      {/* Latest Journal Articles Section (Dynamically Written & Approved User Articles) */}
       <section className="bg-[#e8ede6]/60 py-12 sm:py-16 px-4 sm:px-6 lg:px-8 border-y border-[#062e23]/10">
         <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
             <div>
               <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-bold text-[#2d5a4c] uppercase tracking-wider">
                 <BookOpen size={15} />
-                <span>Publikasi Sains Terakreditasi</span>
+                <span>Publikasi Jurnal Karya Pengguna</span>
               </div>
               <h2 className="text-xl sm:text-3xl font-serif font-bold text-[#062e23] mt-0.5">
-                Jurnal & Riset Taksonomi Terbaru
+                Artikel Ilmiah Yang Terbit
               </h2>
             </div>
 
             <button
-              onClick={() => onNavigateScreen('SCREEN_5')}
-              className="bg-[#062e23] hover:bg-[#1a5948] text-[#d4a373] text-xs font-semibold px-4 py-2.5 rounded-xl transition-colors inline-flex items-center gap-1.5 self-start sm:self-auto"
+              onClick={() => onNavigateScreen('SCREEN_12')}
+              className="bg-[#062e23] hover:bg-[#1a5948] text-[#d4a373] text-xs font-semibold px-4 py-2.5 rounded-xl transition-colors inline-flex items-center gap-1.5 self-start sm:self-auto shadow-md"
             >
-              <span>Buka Jurnal Ilmiah</span>
-              <ArrowRight size={14} />
+              <PenTool size={14} />
+              <span>Tulis Artikel Baru</span>
             </button>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
-            {JOURNAL_ARTICLES.map((article) => (
-              <div
-                key={article.id}
-                onClick={() => onNavigateScreen('SCREEN_5')}
-                className="bg-white rounded-2xl p-5 sm:p-8 border border-[#062e23]/10 shadow-sm hover:shadow-lg transition-all cursor-pointer space-y-3 sm:space-y-4 flex flex-col justify-between group"
-              >
-                <div className="space-y-2 sm:space-y-3">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <span className="px-2.5 py-0.5 rounded-full bg-[#062e23]/10 text-[#062e23] text-[11px] font-semibold">
-                      {article.category}
-                    </span>
-                    <div className="flex items-center gap-1.5 text-[11px] text-[#2d5a4c]">
-                      <ShieldCheck size={13} className="text-emerald-700" />
-                      <span>Peer-Reviewed</span>
-                    </div>
-                  </div>
-
-                  <h3 className="text-lg sm:text-2xl font-serif font-bold text-[#062e23] group-hover:text-[#2d5a4c] transition-colors leading-snug">
-                    {article.title}
-                  </h3>
-
-                  <p className="text-xs sm:text-sm text-[#062e23]/80 line-clamp-3 leading-relaxed">
-                    {article.abstract}
-                  </p>
-                </div>
-
-                <div className="pt-3 border-t border-[#062e23]/10 flex flex-wrap items-center justify-between gap-3 text-xs">
-                  <div className="flex items-center gap-2.5">
-                    <img
-                      src={article.authors[0].avatar}
-                      alt={article.authors[0].name}
-                      className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover border border-[#062e23]/20"
-                    />
-                    <div>
-                      <div className="font-bold text-[#062e23] text-xs">{article.authors[0].name}</div>
-                      <div className="text-[10px] sm:text-[11px] text-[#2d5a4c] truncate max-w-[180px]">{article.authors[0].institution}</div>
-                    </div>
-                  </div>
-
-                  <div className="text-[11px] text-[#062e23]/70 font-medium">
-                    <span>{article.publishedDate}</span>
-                  </div>
-                </div>
+          {/* If No Articles Yet */}
+          {journalArticles.length === 0 ? (
+            <div className="bg-white rounded-3xl p-8 sm:p-12 border border-[#062e23]/10 text-center space-y-4 shadow-sm max-w-2xl mx-auto">
+              <div className="w-14 h-14 rounded-2xl bg-[#e8ede6] text-[#062e23] flex items-center justify-center mx-auto text-2xl">
+                ✍️
               </div>
-            ))}
-          </div>
+              <h3 className="text-xl font-serif font-bold text-[#062e23]">
+                Belum Ada Artikel yang Diterbitkan
+              </h3>
+              <p className="text-xs text-[#2d5a4c] leading-relaxed max-w-md mx-auto">
+                Semua artikel bawaan telah dibersihkan. Anda dapat menulis artikel ilmiah baru, lalu admin akan memverifikasi dan menyetujuinya agar tayang di sini!
+              </p>
+              <button
+                onClick={() => onNavigateScreen('SCREEN_12')}
+                className="bg-[#062e23] text-[#d4a373] hover:bg-[#1a5948] px-5 py-2.5 rounded-xl text-xs font-bold transition-colors inline-flex items-center gap-2 shadow-md"
+              >
+                <PenTool size={15} />
+                <span>Tulis Artikel Pertama Sekarang</span>
+              </button>
+            </div>
+          ) : (
+            /* Articles Grid displaying Author Names clearly */
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+              {journalArticles.map((article) => (
+                <div
+                  key={article.id}
+                  onClick={() => onNavigateScreen('SCREEN_5')}
+                  className="bg-white rounded-2xl p-5 sm:p-8 border border-[#062e23]/10 shadow-sm hover:shadow-lg transition-all cursor-pointer space-y-3 sm:space-y-4 flex flex-col justify-between group"
+                >
+                  <div className="space-y-2 sm:space-y-3">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <span className="px-2.5 py-0.5 rounded-full bg-[#062e23]/10 text-[#062e23] text-[11px] font-semibold">
+                        {article.category}
+                      </span>
+                      <div className="flex items-center gap-1.5 text-[11px] text-[#2d5a4c]">
+                        <ShieldCheck size={13} className="text-emerald-700" />
+                        <span>Peer-Reviewed</span>
+                      </div>
+                    </div>
+
+                    <h3 className="text-lg sm:text-2xl font-serif font-bold text-[#062e23] group-hover:text-[#2d5a4c] transition-colors leading-snug">
+                      {article.title}
+                    </h3>
+
+                    <p className="text-xs sm:text-sm text-[#062e23]/80 line-clamp-3 leading-relaxed">
+                      {article.abstract}
+                    </p>
+                  </div>
+
+                  {/* Explicit Author Name Section */}
+                  <div className="pt-3 border-t border-[#062e23]/10 flex items-center justify-between gap-3 text-xs bg-[#f9faf6] p-3 rounded-xl">
+                    <div className="flex items-center gap-2.5">
+                      <img
+                        src={article.authors[0].avatar}
+                        alt={article.authors[0].name}
+                        className="w-8 h-8 rounded-full object-cover border border-[#062e23]/30"
+                      />
+                      <div>
+                        <div className="font-bold text-[#062e23] text-xs">
+                          Penulis: <span className="text-[#2d5a4c]">{article.authors[0].name}</span>
+                        </div>
+                        <div className="text-[10px] text-[#2d5a4c]/80 truncate max-w-[200px]">
+                          {article.authors[0].institution}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="text-[11px] text-[#062e23]/70 font-medium">
+                      <span>{article.publishedDate}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </div>
