@@ -97,6 +97,28 @@ export interface UserProfile {
   bookmarks: string[]; // article IDs
 }
 
+export interface RegisteredUser {
+  id: string;
+  name: string;
+  email: string;
+  username: string;
+  password: string;
+  institution: string;
+  role: 'Peneliti' | 'Penulis' | 'Pembaca' | 'Admin';
+}
+
+export const INITIAL_USERS_DATABASE: RegisteredUser[] = [
+  {
+    id: "usr-admin-1",
+    name: "Admin Satwalogi",
+    email: "admin@satwalogi.or.id",
+    username: "admin",
+    password: "admin123",
+    institution: "Pusat Admin Satwalogi",
+    role: "Admin"
+  }
+];
+
 export const SPECIES_DATA: Species[] = [
   {
     id: "sp-1",
