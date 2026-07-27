@@ -66,8 +66,8 @@ export interface AdminVerificationItem {
   category: string;
   submittedDate: string;
   status: 'PENDING' | 'APPROVED' | 'REVISION_NEEDED' | 'REJECTED';
-  plagiarismScore: number; // e.g. 1.8%
-  taxonomyAccuracyScore: number; // e.g. 98%
+  plagiarismScore: number;
+  taxonomyAccuracyScore: number;
   citationsVerified: boolean;
   abstractText: string;
   previewSnippet: string;
@@ -94,7 +94,7 @@ export interface UserProfile {
     totalReads: number;
     hIndex: number;
   };
-  bookmarks: string[]; // article IDs
+  bookmarks: string[];
 }
 
 export interface RegisteredUser {
@@ -229,7 +229,7 @@ export const SPECIES_DATA: Species[] = [
     imageUrl: "https://images.unsplash.com/photo-1589656966895-2f33e7653819?auto=format&fit=crop&w=1000&q=80",
     audioTitle: "Desisan Pertahanan & Vokalisasi Komodo Dewasa",
     audioUrl: "https://assets.mixkit.co/active_storage/sfx/2691/2691-preview.mp3",
-    description: "Spesies kadal terbesar dan terberat di bumi yang masih hidup. Memiliki kelenjar racun berbisa di rahang bawah serta penciuman tajam melalu lidah bercabang.",
+    description: "Spesies kadal terbesar dan terberat di bumi yang masih hidup. Memiliki kelenjar racun berbisa di rahang bawah serta penciuman tajam melalui lidah bercabang.",
     physicalCharacteristics: [
       "Panjang rata-rata 2,5-3 meter, berat mencapai 70-135 kg",
       "Lidah panjang berwarna kuning bercabang dua",
@@ -268,7 +268,7 @@ export const SPECIES_DATA: Species[] = [
     ],
     diet: "Herbivora: Padang Lamun (*Thalassia hemprichii*) dan Alga Merah/Hijau",
     threats: ["Pencemaran mikroplastik laut", "Pencurian telur penyu", "Tertangkap jaring trawl nelayan (bycatch)"],
-    conservationEfforts: "Penetapan kawasan konservasi perairan (KKP) padang lamun dan penetasan penetasan buatan di konservasi Pangumbahan."
+    conservationEfforts: "Penetapan kawasan konservasi perairan (KKP) padang lamun dan penetasan buatan di konservasi Pangumbahan."
   },
   {
     id: "sp-6",
@@ -299,13 +299,190 @@ export const SPECIES_DATA: Species[] = [
     diet: "Herbivora: Pakis pegunungan, buah perdu, rumput liar, dan air kaya garam mineral (salty licks)",
     threats: ["Perburuan liar untuk konsumsi daging lokal", "Perambahan hutan lindung pegunungan"],
     conservationEfforts: "Riset DNA barcoding oleh Universitas Sam Ratulangi dan pelindungan habitat TN Lore Lindu."
+  },
+  {
+    id: "sp-7",
+    latinName: "Elephas maximus sumatranus",
+    commonName: "Gajah Sumatra",
+    englishName: "Sumatran Elephant",
+    kingdom: "Animalia",
+    phylum: "Chordata",
+    class: "Mammalia",
+    order: "Proboscidea",
+    family: "Elephantidae",
+    genus: "Elephas",
+    iucnStatus: "CR",
+    iucnLabel: "Kritis (Critically Endangered)",
+    population: "Sekitar 1.400 - 1.700 individu di alam liar",
+    habitat: "Hutan hujan tropis dataran rendah Sumatra",
+    distributionRegion: ["Aceh", "Riau (Giam Siak Kecil)", "Jambi", "Lampung (Way Kambas)"],
+    imageUrl: "https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=1000&q=80",
+    audioTitle: "Terompet Belalai & Infrasonik Gajah Sumatra",
+    audioUrl: "https://assets.mixkit.co/active_storage/sfx/2402/2402-preview.mp3",
+    description: "Subspesies gajah Asia endemik Sumatra dengan postur paling anggun. Berperan penting sebagai pemencar biji tanaman hutan tropis.",
+    physicalCharacteristics: [
+      "Tinggi bahu 2-3 meter, berat 2.000-4.000 kg",
+      "Sepasang gading hanya tumbuh menonjol pada jantan dewasa",
+      "Telinga lebih kecil berbentuk segitiga lengkung",
+      "Kulit berpigmen abu-abu tua dengan bercak merah muda di belalai"
+    ],
+    diet: "Herbivora megafauna: Rumput gajah, bambu hutan, kulit pohon, dan pisang liar",
+    threats: ["Konflik ruang dengan pemukiman", "Perburuan gading", "Keracunan di area perkebunan"],
+    conservationEfforts: "Unit Penanggulangan Konflik Gajah (Elephant Response Unit - ERU) dan pelindungan koridor Way Kambas."
+  },
+  {
+    id: "sp-8",
+    latinName: "Rhinoceros sondaicus",
+    commonName: "Badak Jawa",
+    englishName: "Javan Rhinoceros",
+    kingdom: "Animalia",
+    phylum: "Chordata",
+    class: "Mammalia",
+    order: "Perissodactyla",
+    family: "Rhinocerotidae",
+    genus: "Rhinoceros",
+    iucnStatus: "CR",
+    iucnLabel: "Kritis (Critically Endangered)",
+    population: "Sisa ~ 75 individu di TN Ujung Kulon",
+    habitat: "Hutan hujan dataran rendah & rawa pesisir Ujung Kulon",
+    distributionRegion: ["Taman Nasional Ujung Kulon (Semenanjung Ujung Kulon, Banten)"],
+    imageUrl: "https://images.unsplash.com/photo-1574063413132-355dbfd83e0c?auto=format&fit=crop&w=1000&q=80",
+    audioTitle: "Suara Emisi Udara & Dengkuran Kubangan Badak Jawa",
+    audioUrl: "https://assets.mixkit.co/active_storage/sfx/2691/2691-preview.mp3",
+    description: "Salah satu mamalia terlangka dan paling terancam punah di bumi. Memiliki secula satu cula dan lipatan kulit menyerupai pakaian zirah perang kuno.",
+    physicalCharacteristics: [
+      "Panjang tubuh 3,1-3,2 meter, berat 900-2.300 kg",
+      "Memiliki satu cula pendek sekitar 20-25 cm pada jantan",
+      "Lipatan kulit tebal berpola mosaik di leher dan bahu",
+      "Bibir atas lentur memanjang untuk merenggut pucuk daun"
+    ],
+    diet: "Herbivora browsing: Daun ranting (*Arenga obtusifolia*), tunas pisang liar, dan buah jatuh",
+    threats: ["Bencana alam letusan Gunung Anak Krakatau", "Tsunami pesisir", "Invasif tanaman langkap (*Arenga*)"],
+    conservationEfforts: "Pengendalian tanaman invasif langkap dan studi kelayakan habitat kedua (second habitat establishment)."
+  },
+  {
+    id: "sp-9",
+    latinName: "Nisaetus bartelsi",
+    commonName: "Elang Jawa",
+    englishName: "Javan Hawk-Eagle",
+    kingdom: "Animalia",
+    phylum: "Chordata",
+    class: "Aves",
+    order: "Accipitriformes",
+    family: "Accipitridae",
+    genus: "Nisaetus",
+    iucnStatus: "EN",
+    iucnLabel: "Terguncang (Endangered)",
+    population: "Diperkirakan 300–500 pasang berbiak",
+    habitat: "Hutan hujan tropis pegunungan Pulau Jawa (500–2.000 mdpl)",
+    distributionRegion: ["TN Gunung Gede Pangrango", "TN Halimun Salak", "TN Bromo Tengger Semeru", "TN Merapi"],
+    imageUrl: "https://images.unsplash.com/photo-1611689342806-0863700ce1e4?auto=format&fit=crop&w=1000&q=80",
+    audioTitle: "Panggilan Melengking Elang Jawa (Nisaetus bartelsi)",
+    audioUrl: "https://assets.mixkit.co/active_storage/sfx/2436/2436-preview.mp3",
+    description: "Burung pemangsa endemik Jawa yang dijadikan lambang negara 'Garuda Pancasila'. Memiliki jambul menonjol di kepala berwarna cokelat kemerahan.",
+    physicalCharacteristics: [
+      "Bentang sayap 110-130 cm, panjang tubuh 60 cm",
+      "Jambul hitam panjang 12 cm di atas kepala bersudut tegak",
+      "Bulu dada bergaris cokelat kemerahan melintang meliuk",
+      "Mata berwarna kuning emas tajam mengawasi mangsa"
+    ],
+    diet: "Karnivora raptor: Tupai, Kancil, Burung kecil, Kadal pohon, dan Musang",
+    threats: ["Perburuan liar satwa eksotis", "Hilangnya tutupan hutan primer Jawa"],
+    conservationEfforts: "Monitoring reproduksi sarang tahunan oleh Eagle Conservation Project dan Taman Nasional Jawa."
+  },
+  {
+    id: "sp-10",
+    latinName: "Paradisaea minor",
+    commonName: "Cendrawasih Kuning-Kecil",
+    englishName: "Lesser Bird-of-Paradise",
+    kingdom: "Animalia",
+    phylum: "Chordata",
+    class: "Aves",
+    order: "Passeriformes",
+    family: "Paradisaeidae",
+    genus: "Paradisaea",
+    iucnStatus: "LC",
+    iucnLabel: "Risiko Rendah (Least Concern)",
+    population: "Stabil di hutan hujan daratan Papua",
+    habitat: "Kanopi hutan hujan tropis Papua & pulau rimba sekitarnya",
+    distributionRegion: ["Papua Barat", "Papua Pegunungan", "Kepulauan Raja Ampat", "Pulau Yapen"],
+    imageUrl: "https://images.unsplash.com/photo-1518992028580-6d57bd80f2dd?auto=format&fit=crop&w=1000&q=80",
+    audioTitle: "Kicauan Ritual Tarian Lek Cendrawasih Jantan",
+    audioUrl: "https://assets.mixkit.co/active_storage/sfx/2436/2436-preview.mp3",
+    description: "Burung eksotis yang dijuluki 'Bird of Paradise' karena keindahan bulu hiasan berwarna kuning kecokelatan di samping paha jantan saat melakukan tarian penikahan.",
+    physicalCharacteristics: [
+      "Panjang tubuh 32 cm",
+      "Jantan memiliki hiasan bulu panggul kuning panjang melambai",
+      "Mahkota kepala berbulu kuning keemasan berkilau",
+      "Tenggorokan hijau zamrud iridescence berkilau metalik"
+    ],
+    diet: "Frugivora-Insektivora: Buah pala hutan, buah beringin, dan serangga kanopi",
+    threats: ["Perdagangan mahkota bulu tradisional berlebihan", "Penebangan hutan papua"],
+    conservationEfforts: "Ekoturisme birdwatching berbasis komunitas adat lokal Papua di Raja Ampat."
+  },
+  {
+    id: "sp-11",
+    latinName: "Macrocephalon maleo",
+    commonName: "Burung Maleo",
+    englishName: "Maleo Senkawor",
+    kingdom: "Animalia",
+    phylum: "Chordata",
+    class: "Aves",
+    order: "Galliformes",
+    family: "Megapodiidae",
+    genus: "Macrocephalon",
+    iucnStatus: "CR",
+    iucnLabel: "Kritis (Critically Endangered)",
+    population: "< 8.000 individu di Pulau Sulawesi",
+    habitat: "Pantai berpasir hangat & tempat geotermal vulkanik daratan",
+    distributionRegion: ["TN Bogani Nani Wartabone", "TN Lore Lindu", "Suaka Margasatwa Pinjan-Tanjung Matop"],
+    imageUrl: "https://images.unsplash.com/photo-1591824438708-ce405f36ba3d?auto=format&fit=crop&w=1000&q=80",
+    audioTitle: "Panggilan Khas Pasangan Maleo di Penangkaran Geotermal",
+    audioUrl: "https://assets.mixkit.co/active_storage/sfx/2436/2436-preview.mp3",
+    description: "Burung megapoda unik endemik Sulawesi yang tidak mengerami telurnya. Telurnya dieramkan secara alami menggunakan panas bumi (geotermal) atau pasir pantai yang hangat.",
+    physicalCharacteristics: [
+      "Panjang tubuh 55 cm, warna bulu hitam dengan dada merah muda lembut",
+      "Tonjolan tanduk keras melengkung berwarna hitam di atas kepala",
+      "Kulit muka kuning terang telanjang",
+      "Ukuran telur 5 kali lipat lebih besar dibanding telur ayam biasa"
+    ],
+    diet: "Omnivora darat: Biji-bijian jatuh, semut hutan, rayap, dan buah kecil",
+    threats: ["Pengambilan telur berlebih oleh warga lokal", "Predasi anak maleo oleh biawak dan kucing hutan"],
+    conservationEfforts: "Pagar perlindungan lokasi peneluran (hatchery) dan penetasan geotermal terkontrol."
+  },
+  {
+    id: "sp-12",
+    latinName: "Tarsius wallacei",
+    commonName: "Tarsius Wallace",
+    englishName: "Wallace's Tarsier",
+    kingdom: "Animalia",
+    phylum: "Chordata",
+    class: "Mammalia",
+    order: "Primates",
+    family: "Tarsiidae",
+    genus: "Tarsius",
+    iucnStatus: "VU",
+    iucnLabel: "Rentan (Vulnerable)",
+    population: "Populasi terisolasi di Sulawesi Tengah",
+    habitat: "Hutan hujan dataran rendah & kebun sekunder terpencil",
+    distributionRegion: ["Kabupaten Sigi & Donggala (Sulawesi Tengah)"],
+    imageUrl: "https://images.unsplash.com/photo-1574063413132-355dbfd83e0c?auto=format&fit=crop&w=1000&q=80",
+    audioTitle: "Vokalisasi Duet Pagi Hari Tarsius Wallace",
+    audioUrl: "https://assets.mixkit.co/active_storage/sfx/2677/2677-preview.mp3",
+    description: "Primata nokturnal amat kecil endemik Sulawesi dengan mata raksasa yang tidak dapat melirik, namun kepalanya mampu berputar hingga 180 derajat ke belakang.",
+    physicalCharacteristics: [
+      "Panjang tubuh hanya 12 cm, berat 110-140 gram",
+      "Mata bulat raksasa yang bercahaya di kegelapan",
+      "Tangan dan kaki bermembran perekat untuk melompat antar dahan",
+      "Ekor panjang dengan rumbai bulu tipis di ujungnya"
+    ],
+    diet: "Karnivora murni (Karnivora primata): Belalang, jangkrik, ngengat, dan cicak kecil",
+    threats: ["Penebangan pohon tempat tidur rumpun bambu & pohon beringin", "Penggunaan pestisida serangga"],
+    conservationEfforts: "Studi akustik pemantauan teritorial oleh Institut Pertanian Bogor dan LIPI."
   }
 ];
 
-// Empty pre-loaded articles array so only user written articles will appear!
 export const JOURNAL_ARTICLES: JournalArticle[] = [];
-
-// Empty pre-loaded verification queue array so only user written articles will appear!
 export const ADMIN_VERIFICATION_QUEUE: AdminVerificationItem[] = [];
 
 export const CURRENT_USER: UserProfile = {
