@@ -35,6 +35,7 @@ export interface JournalArticle {
     role: string;
     avatar: string;
   }[];
+  coverImage?: string;
   category: string;
   tags: string[];
   publishedDate: string;
@@ -74,6 +75,7 @@ export interface AdminVerificationItem {
   fullBody?: string;
   tags?: string[];
   speciesTag?: string;
+  coverImage?: string;
 }
 
 export interface UserProfile {

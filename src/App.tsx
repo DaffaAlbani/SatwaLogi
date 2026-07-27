@@ -106,6 +106,7 @@ export function App() {
                   avatar: user ? user.avatar : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80'
                 }
               ],
+              coverImage: item.coverImage,
               category: item.category,
               tags: item.tags || [item.category, 'Publikasi Terverifikasi'],
               publishedDate: 'Hari ini (Baru Saja)',

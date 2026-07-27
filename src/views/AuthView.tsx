@@ -21,10 +21,10 @@ export const AuthView: React.FC<AuthViewProps> = ({ onNavigateScreen, onLoginSuc
   const [role, setRole] = useState<'Peneliti' | 'Penulis' | 'Pembaca' | 'Admin'>('Penulis');
   const [showPassword, setShowPassword] = useState(false);
 
-  const [email, setEmail] = useState('kontributor.biasa@satwalogi.or.id');
-  const [password, setPassword] = useState('••••••••••••');
-  const [fullName, setFullName] = useState('Budi Pratama, S.Si.');
-  const [institution, setInstitution] = useState('Universitas Indonesia');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [institution, setInstitution] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

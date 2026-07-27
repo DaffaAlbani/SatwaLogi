@@ -224,6 +224,21 @@ export const ArticleReaderView: React.FC<ArticleReaderViewProps> = ({
           </div>
         </header>
 
+        {/* Featured News Media Photo Banner (Like Media Online News) */}
+        {article.coverImage && (
+          <div className="max-w-4xl mx-auto rounded-3xl overflow-hidden shadow-xl border border-current/20 relative group">
+            <img
+              src={article.coverImage}
+              alt={article.title}
+              className="w-full h-72 sm:h-96 object-cover"
+            />
+            <div className="bg-black/60 backdrop-blur-md p-3 text-[#f9faf6] text-xs font-sans italic border-t border-white/10 flex items-center justify-between">
+              <span>Dokumentasi Foto Berita Artikel: {article.title}</span>
+              <span className="font-semibold text-[#d4a373]">Satwalogi Media News</span>
+            </div>
+          </div>
+        )}
+
         {/* Abstract Highlight Card */}
         <section className="max-w-4xl mx-auto p-6 sm:p-8 rounded-2xl border border-current/20 bg-black/5 space-y-3">
           <div className="font-serif text-sm font-bold uppercase tracking-widest text-[#d4a373]">

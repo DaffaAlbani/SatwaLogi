@@ -288,27 +288,47 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 <div
                   key={article.id}
                   onClick={() => onNavigateScreen('SCREEN_5')}
-                  className="bg-white rounded-2xl p-5 sm:p-8 border border-[#062e23]/10 shadow-sm hover:shadow-lg transition-all cursor-pointer space-y-3 sm:space-y-4 flex flex-col justify-between group"
+                  className="bg-white rounded-2xl overflow-hidden border border-[#062e23]/10 shadow-sm hover:shadow-lg transition-all cursor-pointer flex flex-col justify-between group"
                 >
-                  <div className="space-y-2 sm:space-y-3">
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <span className="px-2.5 py-0.5 rounded-full bg-[#062e23]/10 text-[#062e23] text-[11px] font-semibold">
-                        {article.category}
-                      </span>
-                      <div className="flex items-center gap-1.5 text-[11px] text-[#2d5a4c]">
-                        <ShieldCheck size={13} className="text-emerald-700" />
-                        <span>Peer-Reviewed</span>
+                  {/* Article Cover Photo (Online Media News Style) */}
+                  {article.coverImage && (
+                    <div className="relative h-48 sm:h-56 overflow-hidden bg-slate-900">
+                      <img
+                        src={article.coverImage}
+                        alt={article.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                      <div className="absolute top-3 left-3">
+                        <span className="px-2.5 py-1 rounded-full bg-[#062e23]/80 backdrop-blur-md text-[#d4a373] text-[10px] font-bold">
+                          {article.category}
+                        </span>
                       </div>
                     </div>
+                  )}
 
-                    <h3 className="text-lg sm:text-2xl font-serif font-bold text-[#062e23] group-hover:text-[#2d5a4c] transition-colors leading-snug">
-                      {article.title}
-                    </h3>
+                  <div className="p-5 sm:p-7 space-y-3 sm:space-y-4 flex-1 flex flex-col justify-between">
+                    <div className="space-y-2 sm:space-y-3">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        {!article.coverImage && (
+                          <span className="px-2.5 py-0.5 rounded-full bg-[#062e23]/10 text-[#062e23] text-[11px] font-semibold">
+                            {article.category}
+                          </span>
+                        )}
+                        <div className="flex items-center gap-1.5 text-[11px] text-[#2d5a4c] ml-auto">
+                          <ShieldCheck size={13} className="text-emerald-700" />
+                          <span>Peer-Reviewed</span>
+                        </div>
+                      </div>
 
-                    <p className="text-xs sm:text-sm text-[#062e23]/80 line-clamp-3 leading-relaxed">
-                      {article.abstract}
-                    </p>
-                  </div>
+                      <h3 className="text-lg sm:text-2xl font-serif font-bold text-[#062e23] group-hover:text-[#2d5a4c] transition-colors leading-snug">
+                        {article.title}
+                      </h3>
+
+                      <p className="text-xs sm:text-sm text-[#062e23]/80 line-clamp-3 leading-relaxed">
+                        {article.abstract}
+                      </p>
+                    </div>
 
                   {/* Explicit Author Name Section */}
                   <div className="pt-3 border-t border-[#062e23]/10 flex items-center justify-between gap-3 text-xs bg-[#f9faf6] p-3 rounded-xl">
@@ -333,7 +353,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
                     </div>
                   </div>
                 </div>
-              ))}
+              </div>
+            ))}
             </div>
           )}
         </div>

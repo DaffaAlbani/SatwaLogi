@@ -219,6 +219,20 @@ export const AdminVerificationView: React.FC<AdminVerificationViewProps> = ({
                 <div><strong>Kategori:</strong> {selectedItem.category} | <strong>Tanggal Submit:</strong> {selectedItem.submittedDate}</div>
               </div>
 
+              {/* Cover Image Attachment Preview */}
+              {selectedItem.coverImage && (
+                <div className="relative h-48 sm:h-56 rounded-2xl overflow-hidden bg-slate-900 border border-[#062e23]/20 shadow-md">
+                  <img
+                    src={selectedItem.coverImage}
+                    alt={selectedItem.articleTitle}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute bottom-2 left-2 bg-black/60 backdrop-blur-md px-3 py-1 rounded-lg text-white text-[11px] font-semibold">
+                    📷 Foto Berita Artikel Dilampirkan Penulis
+                  </div>
+                </div>
+              )}
+
               <div className="bg-[#f9faf6] p-4 rounded-xl border border-[#062e23]/10 space-y-1.5">
                 <div className="text-xs font-bold text-[#d4a373] uppercase tracking-widest font-serif">
                   Abstrak Ilmiah
