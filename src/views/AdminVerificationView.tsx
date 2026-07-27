@@ -252,7 +252,7 @@ export const AdminVerificationView: React.FC<AdminVerificationViewProps> = ({
             <div className="bg-[#062e23] text-[#e8ede6] p-5 sm:p-8 rounded-2xl border border-[#d4a373]/30 shadow-xl space-y-4">
               <h3 className="font-serif font-bold text-base sm:text-lg text-[#d4a373] flex items-center gap-2">
                 <MessageSquare size={18} />
-                <span>Keputusan Dewan Redaksi Admin</span>
+                <span>Keputusan Admin Satwalogi</span>
               </h3>
 
               <div>

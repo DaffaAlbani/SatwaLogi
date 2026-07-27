@@ -53,7 +53,7 @@ export function App() {
     setUser({
       id: `usr-${Math.floor(Math.random() * 900 + 100)}`,
       name: name,
-      title: role === 'Admin' ? 'Dewan Redaksi Admin BRIN' : 'Penulis Kontributor',
+      title: role === 'Admin' ? 'Admin Satwalogi' : 'Penulis Kontributor',
       institution: institution || 'Universitas / Umum',
       email: email,
       role: role,

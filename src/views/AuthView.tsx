@@ -45,9 +45,9 @@ export const AuthView: React.FC<AuthViewProps> = ({ onNavigateScreen, onLoginSuc
 
       if (isAdmin) {
         if (onLoginSuccess) {
-          onLoginSuccess('Admin', 'Dewan Redaksi Admin BRIN', 'admin@satwalogi.or.id', 'Pusat Redaksi BRIN & Satwalogi');
+          onLoginSuccess('Admin', 'Admin Satwalogi', 'admin@satwalogi.or.id', 'Pusat Admin Satwalogi');
         }
-        alert('🔑 Berhasil Masuk sebagai DEWAN REDAKSI ADMIN! Anda dapat memverifikasi dan menerbitkan naskah user.');
+        alert('🔑 Berhasil Masuk sebagai ADMIN SATWALOGI! Anda dapat memverifikasi dan menerbitkan naskah user.');
         onNavigateScreen('SCREEN_14');
       } else {
         // Regular User Login
@@ -95,10 +95,10 @@ export const AuthView: React.FC<AuthViewProps> = ({ onNavigateScreen, onLoginSuc
                 Portal Masuk & Pendaftaran
               </span>
               <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#f9faf6] leading-tight">
-                Akses Kontributor & Dewan Redaksi
+                Akses Kontributor & Admin Satwalogi
               </h2>
               <p className="text-xs text-[#e8ede6]/80 leading-relaxed font-sans">
-                Masuk ke akun Anda untuk menulis artikel berita satwa, mengelola dasbor naskah, atau masuk sebagai Admin Redaksi.
+                Masuk ke akun Anda untuk menulis artikel berita satwa, mengelola dasbor naskah, atau masuk sebagai Admin Satwalogi.
               </p>
             </div>
           </div>
@@ -106,7 +106,7 @@ export const AuthView: React.FC<AuthViewProps> = ({ onNavigateScreen, onLoginSuc
           <div className="relative z-10 pt-8 border-t border-[#1a5948] space-y-2 text-xs text-[#b4d7cd]">
             <div className="flex items-center gap-2 font-medium">
               <ShieldCheck size={16} className="text-[#d4a373]" />
-              <span>Penerbitan Terverifikasi Dewan Redaksi Admin</span>
+              <span>Penerbitan Terverifikasi Admin Satwalogi</span>
             </div>
             <div className="flex items-center gap-2 font-medium">
               <Globe size={16} className="text-[#d4a373]" />
@@ -204,7 +204,7 @@ export const AuthView: React.FC<AuthViewProps> = ({ onNavigateScreen, onLoginSuc
                 <div className="bg-[#e8ede6] p-3.5 rounded-xl border border-[#062e23]/15 text-xs text-[#062e23] space-y-1">
                   <div className="font-bold flex items-center gap-1.5 text-[#2d5a4c]">
                     <KeyRound size={14} className="text-[#d4a373]" />
-                    <span>Akses Khusus Admin Dewan Redaksi:</span>
+                    <span>Akses Khusus Admin Satwalogi:</span>
                   </div>
                   <div className="font-mono text-[11px] opacity-90 pl-5">
                     Username: <strong className="text-[#062e23]">admin</strong> | Password: <strong className="text-[#062e23]">admin123</strong>
