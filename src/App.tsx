@@ -61,10 +61,10 @@ export function App() {
       bio: 'Kontributor aktif Satwalogi.',
       scientificInterests: ['Ornitologi', 'Konservasi Genetik', 'Mamalogi'],
       stats: {
-        totalArticles: 1,
-        totalCitations: 12,
-        totalReads: 450,
-        hIndex: 2
+        totalArticles: 0,
+        totalCitations: 0,
+        totalReads: 0,
+        hIndex: 0
       },
       bookmarks: []
     });

@@ -110,7 +110,7 @@ export const AuthorDashboardView: React.FC<AuthorDashboardViewProps> = ({
               <span className="text-xs font-bold uppercase tracking-wider">Total Sitasi Jurnal</span>
               <Quote size={18} />
             </div>
-            <div className="text-3xl font-serif font-bold text-emerald-800">{user ? user.stats.totalCitations : 42}</div>
+            <div className="text-3xl font-serif font-bold text-emerald-800">{user ? user.stats.totalCitations : 0}</div>
             <div className="text-[11px] text-emerald-700 font-medium">Indeks Google Scholar / DOI</div>
           </div>
 
@@ -119,7 +119,7 @@ export const AuthorDashboardView: React.FC<AuthorDashboardViewProps> = ({
               <span className="text-xs font-bold uppercase tracking-wider">Total Pembaca</span>
               <Eye size={18} />
             </div>
-            <div className="text-3xl font-serif font-bold text-[#062e23]">{user ? user.stats.totalReads.toLocaleString() : '1,890'}</div>
+            <div className="text-3xl font-serif font-bold text-[#062e23]">{user ? user.stats.totalReads.toLocaleString() : '0'}</div>
             <div className="text-[11px] text-[#062e23]/70 font-medium">Akses Terbuka</div>
           </div>
 
@@ -128,7 +128,7 @@ export const AuthorDashboardView: React.FC<AuthorDashboardViewProps> = ({
               <span className="text-xs font-bold uppercase tracking-wider text-[#062e23]">Metrik h-Index</span>
               <Award size={18} />
             </div>
-            <div className="text-3xl font-serif font-bold text-[#d4a373]">{user ? user.stats.hIndex : 4}</div>
+            <div className="text-3xl font-serif font-bold text-[#d4a373]">{user ? user.stats.hIndex : 0}</div>
             <div className="text-[11px] text-[#062e23]/70 font-medium">Pengaruh Riset</div>
           </div>
         </div>
