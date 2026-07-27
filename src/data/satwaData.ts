@@ -65,12 +65,15 @@ export interface AdminVerificationItem {
   category: string;
   submittedDate: string;
   status: 'PENDING' | 'APPROVED' | 'REVISION_NEEDED' | 'REJECTED';
-  plagiarismScore: number; // e.g. 2%
+  plagiarismScore: number; // e.g. 1.8%
   taxonomyAccuracyScore: number; // e.g. 98%
   citationsVerified: boolean;
   abstractText: string;
   previewSnippet: string;
   reviewerNotes?: string;
+  fullBody?: string;
+  tags?: string[];
+  speciesTag?: string;
 }
 
 export interface UserProfile {
@@ -365,7 +368,10 @@ export const ADMIN_VERIFICATION_QUEUE: AdminVerificationItem[] = [
     citationsVerified: true,
     abstractText: "Penelitian ini mengukur kepadatan individu dan laju konsumsi padang lamun Thalassia hemprichii oleh populasi juvenile Chelonia mydas di perairan Karang Muaras, Derawan. Hasil survei transek kuadrat menunjukkan peningkatan frekuensi makan pada pasut perbani.",
     previewSnippet: "Padang lamun Kepulauan Derawan memegang peranan krusial sebagai nursery ground bagi penyu hijau. Berdasarkan pemetaan drone bawah air dan foto-ID karapas...",
-    reviewerNotes: "Naskah sangat komprehensif. Perlu pengecekan format koordinat GPS transek pada tabel 3 sebelum publikasi final."
+    reviewerNotes: "Naskah sangat komprehensif. Perlu pengecekan format koordinat GPS transek pada tabel 3 sebelum publikasi final.",
+    fullBody: "Padang lamun Kepulauan Derawan memegang peranan krusial sebagai nursery ground bagi penyu hijau. Berdasarkan pemetaan drone bawah air dan foto-ID karapas, kami mengukur kepadatan individu 3.4 individu/hektar.",
+    tags: ["Chelonia mydas", "Padang Lamun", "Derawan", "Konservasi Laut"],
+    speciesTag: "Chelonia mydas"
   },
   {
     id: "ver-202",
@@ -380,7 +386,10 @@ export const ADMIN_VERIFICATION_QUEUE: AdminVerificationItem[] = [
     citationsVerified: false,
     abstractText: "Pengukuran kadar kortisol feses dilakukan pada 12 individu Jalak Bali yang dilepasliarkan di TNBB untuk mengevaluasi adaptasi terhadap predator alami.",
     previewSnippet: "Pengambilan sampel feses harian menunjukkan lonjakan kadar metabolit kortisosteroid pada 7 hari pertama pasca peluncuran...",
-    reviewerNotes: "Terdapat 2 sitasi jurnal tahun 2011 yang tidak tercantum DOI-nya pada daftar referensi. Mohon perbaiki dan submit ulang."
+    reviewerNotes: "Terdapat 2 sitasi jurnal tahun 2011 yang tidak tercantum DOI-nya pada daftar referensi. Mohon perbaiki dan submit ulang.",
+    fullBody: "Pengambilan sampel feses harian menunjukkan lonjakan kadar metabolit kortisosteroid pada 7 hari pertama pasca pelepasliaran. Kadar ini melandai kembali mendekati normal pada minggu ke-3.",
+    tags: ["Leucopsar rothschildi", "Jalak Bali", "Kortisol", "Fisiologi"],
+    speciesTag: "Leucopsar rothschildi"
   }
 ];
 

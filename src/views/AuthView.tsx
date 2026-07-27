@@ -6,34 +6,32 @@ import {
   Eye, 
   EyeOff, 
   ArrowRight, 
-  Sparkles, 
-  Award, 
   ShieldCheck,
-  CheckCircle2,
-  Globe
+  Globe,
+  CheckCircle2
 } from 'lucide-react';
 
 interface AuthViewProps {
   onNavigateScreen: (screenId: string) => void;
-  onLoginSuccess?: (userRole: string) => void;
+  onLoginSuccess?: (role: 'Peneliti' | 'Penulis' | 'Pembaca' | 'Admin', name: string, email: string, institution: string) => void;
 }
 
 export const AuthView: React.FC<AuthViewProps> = ({ onNavigateScreen, onLoginSuccess }) => {
   const [authMode, setAuthMode] = useState<'LOGIN' | 'REGISTER'>('LOGIN');
-  const [role, setRole] = useState<'Peneliti' | 'Penulis' | 'Pembaca' | 'Admin'>('Peneliti');
+  const [role, setRole] = useState<'Peneliti' | 'Penulis' | 'Pembaca' | 'Admin'>('Penulis');
   const [showPassword, setShowPassword] = useState(false);
 
-  const [email, setEmail] = useState('satria.wibawa@brin.go.id');
+  const [email, setEmail] = useState('kontributor.biasa@satwalogi.or.id');
   const [password, setPassword] = useState('••••••••••••');
-  const [fullName, setFullName] = useState('Dr. Satria Wibawa, M.Sc.');
-  const [institution, setInstitution] = useState('Pusat Riset Biosistemasi BRIN');
+  const [fullName, setFullName] = useState('Budi Pratama, S.Si.');
+  const [institution, setInstitution] = useState('Universitas Indonesia');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (onLoginSuccess) {
-      onLoginSuccess(role);
+      onLoginSuccess(role, fullName, email, institution);
     }
-    alert(`Berhasil ${authMode === 'LOGIN' ? 'Masuk' : 'Mendaftar'} sebagai ${role}! Navigasi ke Dasbor Penulis [SCREEN_8].`);
+    alert(`Berhasil Masuk sebagai "${fullName}" (${role}) dari ${institution}! Anda sekarang dapat menulis artikel di Editor [SCREEN_12] atau mengelola status di Dasbor [SCREEN_8].`);
     onNavigateScreen('SCREEN_8');
   };
 
@@ -41,7 +39,7 @@ export const AuthView: React.FC<AuthViewProps> = ({ onNavigateScreen, onLoginSuc
     <div className="min-h-[85vh] py-12 flex items-center justify-center px-4 sm:px-6 lg:px-8">
       {/* SCREEN_11 Identifier Watermark Badge */}
       <div className="fixed top-20 right-4 bg-[#062e23] text-[#d4a373] text-[10px] font-mono py-1 px-3 rounded-full border border-[#d4a373]/30 z-30 shadow-md">
-        [SCREEN_11] Auth Portal
+        [SCREEN_11] Auth Portal User & Admin
       </div>
 
       <div className="max-w-5xl w-full bg-white rounded-3xl border border-[#062e23]/10 shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12">
@@ -60,13 +58,13 @@ export const AuthView: React.FC<AuthViewProps> = ({ onNavigateScreen, onLoginSuc
 
             <div className="space-y-3 pt-6">
               <span className="px-3 py-1 rounded-full bg-[#1a5948] text-[#d4a373] text-[11px] font-bold tracking-wider uppercase">
-                Portal Kontributor Ilmiah
+                Portal Masuk User & Admin
               </span>
               <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#f9faf6] leading-tight">
-                Bergabung dengan Jejaring Akademisi Satwa Indonesia
+                Login User Biasa & Pengiriman Naskah Artikel
               </h2>
               <p className="text-xs text-[#e8ede6]/80 leading-relaxed font-sans">
-                Akses ribuan manuskrip peer-reviewed, kirimkan artikel taksonomi, dan berkontribusi langsung pada dokumentasi keanekaragaman hayati nusantara.
+                Masuk sebagai <strong>Penulis User Biasa</strong> untuk menulis artikel baru dan mengirim ke dewan redaksi, atau masuk sebagai <strong>Admin</strong> untuk memverifikasi naskah.
               </p>
             </div>
           </div>
@@ -74,11 +72,11 @@ export const AuthView: React.FC<AuthViewProps> = ({ onNavigateScreen, onLoginSuc
           <div className="relative z-10 pt-8 border-t border-[#1a5948] space-y-2 text-xs text-[#b4d7cd]">
             <div className="flex items-center gap-2 font-medium">
               <ShieldCheck size={16} className="text-[#d4a373]" />
-              <span>Verifikasi Identitas Institusi Riset & Kampus</span>
+              <span>Verifikasi Berjenjang (User Biasa → Moderasi Admin)</span>
             </div>
             <div className="flex items-center gap-2 font-medium">
               <Globe size={16} className="text-[#d4a373]" />
-              <span>Standardisasi DOI & Lisensi Open Access CC-BY 4.0</span>
+              <span>Penerbitan Terbuka ke Katalog Jurnal Live</span>
             </div>
           </div>
         </div>
@@ -112,22 +110,20 @@ export const AuthView: React.FC<AuthViewProps> = ({ onNavigateScreen, onLoginSuc
           {/* Form Header */}
           <div className="space-y-1">
             <h3 className="text-2xl font-serif font-bold text-[#062e23]">
-              {authMode === 'LOGIN' ? 'Selamat Datang Kembali' : 'Buat Akun Kontributor'}
+              {authMode === 'LOGIN' ? 'Portal Masuk Pengguna' : 'Pendaftaran Kontributor Baru'}
             </h3>
             <p className="text-xs text-[#2d5a4c]">
-              {authMode === 'LOGIN'
-                ? 'Masukkan kredensial institusi atau email akademik Anda.'
-                : 'Pilih peran akademis dan lengkapi data profil riset Anda.'}
+              Pilih peran Anda (User Biasa/Penulis/Admin) untuk memulai alur penulisan dan verifikasi.
             </p>
           </div>
 
           {/* Role Selector Buttons */}
           <div className="space-y-2">
             <label className="block text-[11px] font-bold uppercase tracking-wider text-[#2d5a4c]">
-              Pilih Peran Pengguna (Role):
+              Pilih Peran Pengguna (Role Login):
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-              {(['Peneliti', 'Penulis', 'Pembaca', 'Admin'] as const).map((r) => (
+              {(['Penulis', 'Pembaca', 'Peneliti', 'Admin'] as const).map((r) => (
                 <button
                   key={r}
                   type="button"
@@ -138,7 +134,7 @@ export const AuthView: React.FC<AuthViewProps> = ({ onNavigateScreen, onLoginSuc
                       : 'bg-white text-[#062e23] border-[#062e23]/10 hover:bg-[#e8ede6]'
                   }`}
                 >
-                  {r}
+                  {r === 'Penulis' ? 'User Biasa (Penulis)' : r}
                 </button>
               ))}
             </div>
@@ -146,39 +142,35 @@ export const AuthView: React.FC<AuthViewProps> = ({ onNavigateScreen, onLoginSuc
 
           {/* Auth Form Fields */}
           <form onSubmit={handleSubmit} className="space-y-4">
-            {authMode === 'REGISTER' && (
-              <>
-                <div>
-                  <label className="block text-xs font-bold text-[#2d5a4c] mb-1">Nama Lengkap & Gelar *</label>
-                  <div className="relative flex items-center">
-                    <User size={16} className="absolute left-3 text-[#2d5a4c]" />
-                    <input
-                      type="text"
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#062e23]/20 bg-white text-xs font-semibold text-[#062e23] focus:outline-none focus:ring-2 focus:ring-[#062e23]"
-                      placeholder="Dr. Nama Lengkap, M.Sc."
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-[#2d5a4c] mb-1">Institusi / Universitas *</label>
-                  <input
-                    type="text"
-                    value={institution}
-                    onChange={(e) => setInstitution(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl border border-[#062e23]/20 bg-white text-xs font-semibold text-[#062e23] focus:outline-none focus:ring-2 focus:ring-[#062e23]"
-                    placeholder="BRIN / IPB / UGM / Universitas..."
-                    required
-                  />
-                </div>
-              </>
-            )}
+            <div>
+              <label className="block text-xs font-bold text-[#2d5a4c] mb-1">Nama Lengkap Pengguna *</label>
+              <div className="relative flex items-center">
+                <User size={16} className="absolute left-3 text-[#2d5a4c]" />
+                <input
+                  type="text"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#062e23]/20 bg-white text-xs font-semibold text-[#062e23] focus:outline-none focus:ring-2 focus:ring-[#062e23]"
+                  placeholder="Budi Pratama, S.Si."
+                  required
+                />
+              </div>
+            </div>
 
             <div>
-              <label className="block text-xs font-bold text-[#2d5a4c] mb-1">Email Akademik / Institusi *</label>
+              <label className="block text-xs font-bold text-[#2d5a4c] mb-1">Institusi / Afiliasi User *</label>
+              <input
+                type="text"
+                value={institution}
+                onChange={(e) => setInstitution(e.target.value)}
+                className="w-full px-4 py-2.5 rounded-xl border border-[#062e23]/20 bg-white text-xs font-semibold text-[#062e23] focus:outline-none focus:ring-2 focus:ring-[#062e23]"
+                placeholder="Universitas Indonesia / Umum"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-[#2d5a4c] mb-1">Email Pengguna *</label>
               <div className="relative flex items-center">
                 <Mail size={16} className="absolute left-3 text-[#2d5a4c]" />
                 <input
@@ -186,7 +178,7 @@ export const AuthView: React.FC<AuthViewProps> = ({ onNavigateScreen, onLoginSuc
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#062e23]/20 bg-white text-xs font-semibold text-[#062e23] focus:outline-none focus:ring-2 focus:ring-[#062e23]"
-                  placeholder="nama@institusi.ac.id"
+                  placeholder="budi@universitas.ac.id"
                   required
                 />
               </div>
@@ -219,18 +211,18 @@ export const AuthView: React.FC<AuthViewProps> = ({ onNavigateScreen, onLoginSuc
               type="submit"
               className="w-full bg-[#062e23] hover:bg-[#1a5948] text-[#f9faf6] py-3 rounded-xl font-bold text-xs transition-colors flex items-center justify-center gap-2 shadow-md pt-3"
             >
-              <span>{authMode === 'LOGIN' ? 'Masuk ke Satwalogi' : 'Daftar Akun Baru'}</span>
+              <span>Masuk Sebagai {role === 'Penulis' ? 'User Biasa (Penulis)' : role}</span>
               <ArrowRight size={16} />
             </button>
           </form>
 
-          {/* Quick Jump Shortcuts to Author Dashboard / Admin */}
+          {/* Quick Shortcuts */}
           <div className="pt-4 border-t border-[#062e23]/10 flex flex-wrap items-center justify-between text-xs text-[#2d5a4c]">
-            <button onClick={() => onNavigateScreen('SCREEN_8')} className="hover:underline font-semibold">
-              Buka Dasbor Penulis [SCREEN_8] →
+            <button onClick={() => onNavigateScreen('SCREEN_12')} className="hover:underline font-semibold">
+              Ke Editor Penulisan Artikel [SCREEN_12] →
             </button>
-            <button onClick={() => onNavigateScreen('SCREEN_6')} className="hover:underline font-semibold">
-              Pengaturan Akun [SCREEN_6] →
+            <button onClick={() => onNavigateScreen('SCREEN_14')} className="hover:underline font-semibold">
+              Ke Verifikasi Admin [SCREEN_14] →
             </button>
           </div>
         </div>

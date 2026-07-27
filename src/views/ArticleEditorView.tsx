@@ -2,30 +2,31 @@ import React, { useState } from 'react';
 import { 
   Bold, 
   Italic, 
-  Heading1, 
   Heading2, 
-  List, 
   Quote, 
-  Link, 
   Image, 
   Send, 
   Save, 
   Eye, 
-  FileCheck, 
   Tag, 
   Sparkles, 
-  AlertCircle,
   CheckCircle2,
   Table,
-  Code
+  UserCheck
 } from 'lucide-react';
-import { SPECIES_DATA } from '../data/satwaData';
+import { SPECIES_DATA, UserProfile, AdminVerificationItem } from '../data/satwaData';
 
 interface ArticleEditorViewProps {
+  currentUser: UserProfile;
   onNavigateScreen: (screenId: string) => void;
+  onSubmitArticle: (newItem: AdminVerificationItem) => void;
 }
 
-export const ArticleEditorView: React.FC<ArticleEditorViewProps> = ({ onNavigateScreen }) => {
+export const ArticleEditorView: React.FC<ArticleEditorViewProps> = ({ 
+  currentUser, 
+  onNavigateScreen, 
+  onSubmitArticle 
+}) => {
   const [title, setTitle] = useState('Analisis Kepadatan Sarang & Adaptasi Pongo tapanuliensis Terhadap Variasi Fragmentasi Tajuk');
   const [category, setCategory] = useState('Konservasi Genetik & Bioakustik');
   const [selectedSpecies, setSelectedSpecies] = useState('Pongo tapanuliensis');
@@ -40,7 +41,7 @@ Pengamatan sarang dilakukan menggunakan metode Line Transect sepanjang 12 km pad
 Hasil inventarisasi menunjukkan kepadatan rata-rata 0.68 sarang/km². Tajuk pohon Shorea spp. menjadi pilihan utama pembuatan sarang malam (42%)...`);
 
   const [activeTab, setActiveTab] = useState<'WRITE' | 'PREVIEW'>('WRITE');
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submittedItem, setSubmittedItem] = useState<AdminVerificationItem | null>(null);
 
   const handleToolbarInsert = (syntax: string) => {
     setArticleBody((prev) => prev + `\n${syntax}`);
@@ -48,14 +49,35 @@ Hasil inventarisasi menunjukkan kepadatan rata-rata 0.68 sarang/km². Tajuk poho
 
   const handleSubmitPeerReview = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
+    const newId = `ver-${Math.floor(100 + Math.random() * 900)}`;
+    const newItem: AdminVerificationItem = {
+      id: newId,
+      articleTitle: title,
+      authorName: currentUser.name,
+      authorInstitution: currentUser.institution,
+      category: category,
+      submittedDate: 'Hari ini (Baru Saja)',
+      status: 'PENDING',
+      plagiarismScore: parseFloat((Math.random() * 3 + 0.8).toFixed(1)),
+      taxonomyAccuracyScore: parseFloat((95 + Math.random() * 4.9).toFixed(1)),
+      citationsVerified: true,
+      abstractText: abstractIndo,
+      previewSnippet: articleBody.substring(0, 180) + '...',
+      fullBody: articleBody,
+      reviewerNotes: 'Naskah baru saja dikirim oleh kontributor. Menunggu verifikasi awal dewan redaksi admin.',
+      speciesTag: selectedSpecies,
+      tags: [selectedSpecies, category, 'User Submission']
+    };
+
+    onSubmitArticle(newItem);
+    setSubmittedItem(newItem);
   };
 
   return (
     <div className="space-y-8 pb-24">
       {/* SCREEN_12 Identifier Watermark Badge */}
       <div className="bg-[#062e23] text-[#d4a373] text-[11px] font-mono py-1 px-4 text-center border-b border-[#d4a373]/30">
-        [SCREEN_12] Penulis - Editor Artikel (Bahasa Indonesia)
+        [SCREEN_12] Penulis - Editor Artikel (User Submission Portal)
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
@@ -64,60 +86,68 @@ Hasil inventarisasi menunjukkan kepadatan rata-rata 0.68 sarang/km². Tajuk poho
           <div>
             <div className="flex items-center gap-2 text-xs font-bold text-[#2d5a4c] uppercase tracking-wider">
               <Sparkles size={16} />
-              <span>Studio Penulisan Jurnal Ilmiah</span>
+              <span>Studio Penulisan Naskah Ilmiah User Kontributor</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#062e23] mt-1">
-              Editor Naskah Ilmiah Satwalogi
+              Editor Naskah & Pengiriman Artikel
             </h1>
           </div>
 
-          {/* Action Buttons */}
+          {/* Active Author Info Pill */}
           <div className="flex items-center gap-3">
+            <div className="bg-white border border-[#062e23]/20 px-3.5 py-2 rounded-xl text-xs flex items-center gap-2 shadow-sm">
+              <UserCheck size={16} className="text-[#2d5a4c]" />
+              <div>
+                <span className="font-bold text-[#062e23]">{currentUser.name}</span>
+                <span className="text-[10px] text-[#2d5a4c] block">({currentUser.role})</span>
+              </div>
+            </div>
+
             <button
               type="button"
-              onClick={() => alert('Draf artikel berhasil disimpan di local storage.')}
-              className="px-4 py-2.5 rounded-xl border border-[#062e23]/20 hover:bg-[#e8ede6] text-xs font-semibold text-[#062e23] flex items-center gap-2 transition-colors"
+              onClick={() => alert('Draf artikel berhasil disimpan di penyimpanan lokal.')}
+              className="px-3.5 py-2.5 rounded-xl border border-[#062e23]/20 hover:bg-[#e8ede6] text-xs font-semibold text-[#062e23] flex items-center gap-1.5 transition-colors"
             >
               <Save size={15} />
-              <span>Simpan Draf</span>
+              <span className="hidden sm:inline">Simpan Draf</span>
             </button>
 
             <button
               onClick={() => setActiveTab(activeTab === 'WRITE' ? 'PREVIEW' : 'WRITE')}
-              className={`px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-colors ${
+              className={`px-3.5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors ${
                 activeTab === 'PREVIEW'
                   ? 'bg-[#d4a373] text-[#062e23]'
                   : 'bg-[#e8ede6] text-[#062e23] hover:bg-[#062e23]/10'
               }`}
             >
               <Eye size={15} />
-              <span>{activeTab === 'WRITE' ? 'Preview Jurnal' : 'Kembali Edit'}</span>
+              <span>{activeTab === 'WRITE' ? 'Preview Jurnal' : 'Edit Naskah'}</span>
             </button>
           </div>
         </div>
 
         {/* Success Alert Banner if Submitted */}
-        {isSubmitted && (
-          <div className="bg-emerald-900 text-[#f9faf6] p-6 rounded-2xl border border-emerald-700 space-y-2 animate-fadeIn shadow-lg">
+        {submittedItem && (
+          <div className="bg-emerald-900 text-[#f9faf6] p-6 rounded-2xl border border-emerald-700 space-y-3 animate-fadeIn shadow-xl">
             <div className="flex items-center gap-2 text-[#d4a373] font-bold text-base">
-              <CheckCircle2 size={20} />
-              <span>Naskah Berhasil Dikirim ke Tim Redaksi Verifikasi [SCREEN_14]</span>
+              <CheckCircle2 size={22} />
+              <span>Naskah Berhasil Dikirim ke Antrean Moderasi Admin (ID: {submittedItem.id})!</span>
             </div>
             <p className="text-xs text-[#e8ede6]/90 leading-relaxed">
-              Naskah Anda kini berstatus <span className="text-[#d4a373] font-bold">"PENDING MODERASI"</span> dan sedang ditinjau oleh Dewan Redaksi BRIN. Anda dapat mengecek status di <strong>Dasbor Penulis [SCREEN_8]</strong> atau memantau di <strong>Admin Verifikasi [SCREEN_14]</strong>.
+              Artikel karya <strong>{currentUser.name}</strong> berjudul <em>"{submittedItem.articleTitle}"</em> telah masuk ke antrean verifikasi dengan status <span className="text-[#d4a373] font-bold">"PENDING"</span>. Admin sekarang dapat meninjau, menyetujui, atau meminta revisi di panel Admin Verifikasi.
             </p>
-            <div className="pt-2 flex items-center gap-3">
+            <div className="pt-2 flex flex-wrap items-center gap-3">
               <button
                 onClick={() => onNavigateScreen('SCREEN_14')}
-                className="bg-[#d4a373] text-[#062e23] px-3.5 py-1.5 rounded-lg text-xs font-bold hover:bg-white transition-colors"
+                className="bg-[#d4a373] text-[#062e23] px-4 py-2 rounded-xl text-xs font-bold hover:bg-white transition-colors flex items-center gap-1.5 shadow-md"
               >
-                Lihat di Panel Admin Verifikasi [SCREEN_14]
+                <span>Periksa sebagai Admin di Verifikasi [SCREEN_14]</span>
               </button>
               <button
-                onClick={() => setIsSubmitted(false)}
-                className="text-xs text-[#b4d7cd] hover:underline"
+                onClick={() => onNavigateScreen('SCREEN_8')}
+                className="bg-[#1a5948] text-[#f9faf6] px-4 py-2 rounded-xl text-xs font-bold hover:bg-[#2d5a4c] transition-colors border border-[#d4a373]/30"
               >
-                Tutup Notifikasi
+                <span>Lihat Status di Dasbor Penulis [SCREEN_8]</span>
               </button>
             </div>
           </div>
@@ -129,14 +159,14 @@ Hasil inventarisasi menunjukkan kepadatan rata-rata 0.68 sarang/km². Tajuk poho
           <div className="bg-white rounded-2xl p-6 sm:p-8 border border-[#062e23]/10 shadow-sm space-y-6">
             <h3 className="font-serif text-lg font-bold text-[#062e23] border-b border-[#062e23]/10 pb-3 flex items-center gap-2">
               <Tag size={18} className="text-[#2d5a4c]" />
-              <span>Metadata & Pengaturan Naskah</span>
+              <span>Pengaturan Metadata Naskah Karya User</span>
             </h3>
 
             <div className="space-y-4">
               {/* Title Input */}
               <div>
                 <label className="block text-xs font-bold text-[#2d5a4c] uppercase tracking-wider mb-1">
-                  Judul Artikel Ilmiah (Bahasa Indonesia) *
+                  Judul Artikel Ilmiah *
                 </label>
                 <input
                   type="text"
@@ -187,7 +217,7 @@ Hasil inventarisasi menunjukkan kepadatan rata-rata 0.68 sarang/km². Tajuk poho
               {/* Abstract Input */}
               <div>
                 <label className="block text-xs font-bold text-[#2d5a4c] uppercase tracking-wider mb-1">
-                  Abstrak Ringkas (Maksimal 250 kata) *
+                  Abstrak Ringkas *
                 </label>
                 <textarea
                   rows={3}
@@ -232,7 +262,7 @@ Hasil inventarisasi menunjukkan kepadatan rata-rata 0.68 sarang/km². Tajuk poho
               <span className="h-5 w-px bg-[#062e23]/20 mx-1"></span>
               <button
                 type="button"
-                onClick={() => handleToolbarInsert('[Sitasi: Kusuma et al., 2026]')}
+                onClick={() => handleToolbarInsert(`[Sitasi: ${currentUser.name.split(' ')[1] || currentUser.name}, 2026]`)}
                 className="p-2 hover:bg-[#062e23]/10 rounded font-semibold text-[#2d5a4c] flex items-center gap-1"
                 title="Insert Citation Tag"
               >
@@ -241,7 +271,7 @@ Hasil inventarisasi menunjukkan kepadatan rata-rata 0.68 sarang/km². Tajuk poho
               </button>
               <button
                 type="button"
-                onClick={() => handleToolbarInsert('![Gambar 1: Deskripsi sampel](https://images.unsplash.com/photo-1540573133985-7585677a3281)')}
+                onClick={() => handleToolbarInsert('![Gambar 1: Sampel Observasi](https://images.unsplash.com/photo-1540573133985-7585677a3281)')}
                 className="p-2 hover:bg-[#062e23]/10 rounded text-[#062e23]"
                 title="Insert Gambar"
               >
@@ -271,8 +301,9 @@ Hasil inventarisasi menunjukkan kepadatan rata-rata 0.68 sarang/km². Tajuk poho
               </div>
             ) : (
               <div className="p-8 bg-[#f9faf6] space-y-6 font-serif leading-relaxed">
-                <div className="p-4 bg-[#e8ede6] rounded-xl text-xs font-sans font-bold text-[#2d5a4c]">
-                  [LIVE PREVIEW MODERASI REDAKSI]
+                <div className="p-4 bg-[#e8ede6] rounded-xl text-xs font-sans font-bold text-[#2d5a4c] flex items-center justify-between">
+                  <span>[LIVE PREVIEW MODERASI REDAKSI]</span>
+                  <span>Penulis: {currentUser.name}</span>
                 </div>
                 <h2 className="text-3xl font-bold text-[#062e23]">{title}</h2>
                 <div className="text-xs font-sans text-[#2d5a4c]">
@@ -292,10 +323,10 @@ Hasil inventarisasi menunjukkan kepadatan rata-rata 0.68 sarang/km². Tajuk poho
           <div className="bg-[#062e23] text-[#e8ede6] p-6 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4 border border-[#d4a373]/30 shadow-xl">
             <div className="space-y-1 text-center sm:text-left">
               <div className="font-serif font-bold text-base text-[#d4a373]">
-                Siap Diproses Peer-Review Dewan Redaksi?
+                Kirim Naskah Karya {currentUser.name} ke Verifikasi Admin?
               </div>
               <p className="text-xs text-[#b4d7cd]">
-                Naskah akan diperiksa otomatis (Plagiarisme, Sitasi, Taksonomi) lalu diverifikasi oleh Admin Dewan Editor.
+                Setelah dikirim, naskah akan langsung muncul di antrean moderasi Admin Verifikasi [SCREEN_14].
               </p>
             </div>
 
@@ -304,7 +335,7 @@ Hasil inventarisasi menunjukkan kepadatan rata-rata 0.68 sarang/km². Tajuk poho
               className="bg-[#d4a373] hover:bg-white text-[#062e23] px-6 py-3 rounded-xl font-bold text-xs transition-colors flex items-center gap-2 shadow-md shrink-0"
             >
               <Send size={16} />
-              <span>Kirimkan Ke Verifikasi Admin [SCREEN_14]</span>
+              <span>Kirimkan Ke Admin Verifikasi [SCREEN_14]</span>
             </button>
           </div>
         </form>

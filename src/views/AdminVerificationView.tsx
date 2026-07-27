@@ -4,39 +4,43 @@ import {
   CheckCircle, 
   XCircle, 
   AlertTriangle, 
-  FileText, 
   Check, 
   MessageSquare, 
   Sparkles, 
-  Search, 
   Clock, 
   UserCheck, 
-  ExternalLink,
-  ChevronRight,
-  RefreshCw
+  RefreshCw,
+  BookOpen
 } from 'lucide-react';
-import { ADMIN_VERIFICATION_QUEUE, AdminVerificationItem } from '../data/satwaData';
+import { AdminVerificationItem } from '../data/satwaData';
 
 interface AdminVerificationViewProps {
+  queue: AdminVerificationItem[];
+  onUpdateStatus: (id: string, newStatus: 'APPROVED' | 'REVISION_NEEDED' | 'REJECTED', notes: string) => void;
   onNavigateScreen: (screenId: string) => void;
 }
 
-export const AdminVerificationView: React.FC<AdminVerificationViewProps> = ({ onNavigateScreen }) => {
-  const [queue, setQueue] = useState<AdminVerificationItem[]>(ADMIN_VERIFICATION_QUEUE);
-  const [selectedItemId, setSelectedItemId] = useState<string>(ADMIN_VERIFICATION_QUEUE[0].id);
-  const [reviewerComment, setReviewerComment] = useState<string>(ADMIN_VERIFICATION_QUEUE[0].reviewerNotes || '');
+export const AdminVerificationView: React.FC<AdminVerificationViewProps> = ({ 
+  queue, 
+  onUpdateStatus, 
+  onNavigateScreen 
+}) => {
+  const [selectedItemId, setSelectedItemId] = useState<string>(queue[0]?.id || '');
+  const [reviewerComment, setReviewerComment] = useState<string>(queue[0]?.reviewerNotes || '');
 
   const selectedItem = queue.find((item) => item.id === selectedItemId) || queue[0];
 
-  const handleUpdateStatus = (newStatus: 'APPROVED' | 'REVISION_NEEDED' | 'REJECTED') => {
-    setQueue((prev) =>
-      prev.map((item) =>
-        item.id === selectedItemId
-          ? { ...item, status: newStatus, reviewerNotes: reviewerComment }
-          : item
-      )
-    );
-    alert(`Status artikel "${selectedItem.articleTitle}" berhasil diperbarui menjadi: ${newStatus}`);
+  const handleUpdateStatusAction = (newStatus: 'APPROVED' | 'REVISION_NEEDED' | 'REJECTED') => {
+    if (!selectedItem) return;
+    onUpdateStatus(selectedItem.id, newStatus, reviewerComment);
+
+    if (newStatus === 'APPROVED') {
+      alert(`🎉 Artikel "${selectedItem.articleTitle}" karya ${selectedItem.authorName} telah DISETUJUI & DITERBITKAN secara otomatis ke Jurnal Ilmiah [SCREEN_5] & Beranda!`);
+    } else if (newStatus === 'REVISION_NEEDED') {
+      alert(`📝 Permintaan revisi berhasil dikirimkan kepada ${selectedItem.authorName}. Status artikel diperbarui di Dasbor Penulis [SCREEN_8].`);
+    } else {
+      alert(`❌ Artikel "${selectedItem.articleTitle}" ditolak.`);
+    }
   };
 
   const statusBadge = (status: string) => {
@@ -52,11 +56,23 @@ export const AdminVerificationView: React.FC<AdminVerificationViewProps> = ({ on
     }
   };
 
+  if (!selectedItem) {
+    return (
+      <div className="max-w-4xl mx-auto py-20 text-center space-y-4">
+        <h2 className="text-2xl font-serif font-bold text-[#062e23]">Belum Ada Naskah dalam Antrean</h2>
+        <p className="text-xs text-[#2d5a4c]">Silakan tulis artikel baru di Editor [SCREEN_12] untuk mengirimkan ke antrean ini.</p>
+        <button onClick={() => onNavigateScreen('SCREEN_12')} className="px-4 py-2 bg-[#062e23] text-white rounded-xl text-xs font-bold">
+          Ke Editor Artikel [SCREEN_12]
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8 pb-24">
       {/* SCREEN_14 Identifier Watermark Badge */}
       <div className="bg-[#062e23] text-[#d4a373] text-[11px] font-mono py-1 px-4 text-center border-b border-[#d4a373]/30">
-        [SCREEN_14] Admin - Verifikasi Artikel (Bahasa Indonesia)
+        [SCREEN_14] Admin - Verifikasi Artikel (Moderasi Peer-Review Dewan Editor)
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
@@ -65,10 +81,10 @@ export const AdminVerificationView: React.FC<AdminVerificationViewProps> = ({ on
           <div>
             <div className="flex items-center gap-2 text-xs font-bold text-[#2d5a4c] uppercase tracking-wider">
               <ShieldCheck size={16} />
-              <span>Panel Moderasi Dewan Redaksi & Admin Reviewer</span>
+              <span>Panel Moderasi Admin Verifikasi Artikel User</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#062e23] mt-1">
-              Verifikasi & Moderasi Naskah Ilmiah
+              Verifikasi Naskah Masuk Dari Kontributor
             </h1>
           </div>
 
@@ -86,7 +102,7 @@ export const AdminVerificationView: React.FC<AdminVerificationViewProps> = ({ on
           <div className="lg:col-span-4 space-y-4">
             <div className="bg-white rounded-2xl p-4 border border-[#062e23]/10 shadow-sm space-y-3">
               <div className="flex items-center justify-between font-serif font-bold text-sm text-[#062e23] border-b border-[#062e23]/10 pb-2">
-                <span>Antrean Naskah Masuk ({queue.length})</span>
+                <span>Antrean Naskah User ({queue.length})</span>
                 <RefreshCw size={14} className="text-[#2d5a4c] cursor-pointer hover:rotate-180 transition-transform" />
               </div>
 
@@ -116,7 +132,7 @@ export const AdminVerificationView: React.FC<AdminVerificationViewProps> = ({ on
                     </h4>
 
                     <div className="text-[11px] opacity-80 flex items-center justify-between pt-1 border-t border-current/10">
-                      <span>{item.authorName}</span>
+                      <span>Penulis: <strong>{item.authorName}</strong></span>
                       <span>{item.submittedDate}</span>
                     </div>
                   </div>
@@ -134,7 +150,7 @@ export const AdminVerificationView: React.FC<AdminVerificationViewProps> = ({ on
                   <Sparkles size={18} className="text-[#d4a373]" />
                   <span>Audit Pembacaan Otomatis (Algoritma Verifikasi Satwalogi)</span>
                 </h3>
-                <span className="text-xs text-[#2d5a4c] font-mono">ID: {selectedItem.id}</span>
+                <span className="text-xs text-[#2d5a4c] font-mono">ID Naskah: {selectedItem.id}</span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -142,9 +158,9 @@ export const AdminVerificationView: React.FC<AdminVerificationViewProps> = ({ on
                 <div className="p-3.5 rounded-xl bg-[#f9faf6] border border-[#062e23]/10 space-y-1">
                   <div className="text-[11px] font-bold text-[#2d5a4c] uppercase tracking-wider">Skor Kepatuhan Plagiasi</div>
                   <div className="text-xl font-serif font-bold text-emerald-800">
-                    {selectedItem.plagiarismScore}% <span className="text-xs font-sans text-emerald-700 font-normal">(Sangat Rendah)</span>
+                    {selectedItem.plagiarismScore}% <span className="text-xs font-sans text-emerald-700 font-normal">(Lolos Turnitin)</span>
                   </div>
-                  <div className="text-[10px] text-[#062e23]/70">Lolos ambang batas &lt; 15% Turnitin</div>
+                  <div className="text-[10px] text-[#062e23]/70">Lolos ambang batas &lt; 15%</div>
                 </div>
 
                 {/* Metric 2: Taxonomy Accuracy */}
@@ -163,7 +179,7 @@ export const AdminVerificationView: React.FC<AdminVerificationViewProps> = ({ on
                     <CheckCircle size={16} />
                     <span>Sitasi Valid</span>
                   </div>
-                  <div className="text-[10px] text-[#062e23]/70">Seluruh DOI aktif dan dapat diakses</div>
+                  <div className="text-[10px] text-[#062e23]/70">Rujukan aktif dan terverifikasi</div>
                 </div>
               </div>
             </div>
@@ -173,7 +189,7 @@ export const AdminVerificationView: React.FC<AdminVerificationViewProps> = ({ on
               <div className="flex items-center justify-between border-b border-[#062e23]/10 pb-3">
                 <div>
                   <div className="text-xs font-bold text-[#2d5a4c] uppercase tracking-wider">
-                    Draf Naskah Penulis
+                    Naskah Ditulis Oleh User
                   </div>
                   <h3 className="font-serif font-bold text-xl text-[#062e23] mt-0.5">
                     {selectedItem.articleTitle}
@@ -182,9 +198,9 @@ export const AdminVerificationView: React.FC<AdminVerificationViewProps> = ({ on
                 {statusBadge(selectedItem.status)}
               </div>
 
-              <div className="text-xs text-[#062e23]/80 space-y-1">
-                <div><strong>Penulis Utama:</strong> {selectedItem.authorName} ({selectedItem.authorInstitution})</div>
-                <div><strong>Kategori:</strong> {selectedItem.category} | <strong>Tanggal Kirim:</strong> {selectedItem.submittedDate}</div>
+              <div className="text-xs text-[#062e23]/80 space-y-1 bg-[#f9faf6] p-3 rounded-xl border border-[#062e23]/10">
+                <div><strong>Penulis User:</strong> {selectedItem.authorName} ({selectedItem.authorInstitution})</div>
+                <div><strong>Kategori:</strong> {selectedItem.category} | <strong>Tanggal Dikirim:</strong> {selectedItem.submittedDate}</div>
               </div>
 
               <div className="bg-[#f9faf6] p-4 rounded-xl border border-[#062e23]/10 space-y-2">
@@ -197,8 +213,8 @@ export const AdminVerificationView: React.FC<AdminVerificationViewProps> = ({ on
               </div>
 
               <div className="bg-[#e8ede6] p-4 rounded-xl border border-[#062e23]/10 space-y-2 font-serif text-xs leading-relaxed">
-                <div className="font-bold font-sans text-[#2d5a4c]">Cuplikan Isi Naskah:</div>
-                <p>{selectedItem.previewSnippet}</p>
+                <div className="font-bold font-sans text-[#2d5a4c]">Teks Lengkap Karya User:</div>
+                <p className="whitespace-pre-wrap">{selectedItem.fullBody || selectedItem.previewSnippet}</p>
               </div>
             </div>
 
@@ -206,12 +222,12 @@ export const AdminVerificationView: React.FC<AdminVerificationViewProps> = ({ on
             <div className="bg-[#062e23] text-[#e8ede6] p-6 sm:p-8 rounded-2xl border border-[#d4a373]/30 shadow-xl space-y-4">
               <h3 className="font-serif font-bold text-lg text-[#d4a373] flex items-center gap-2">
                 <MessageSquare size={18} />
-                <span>Catatan Verifikasi & Keputusan Dewan Redaksi</span>
+                <span>Keputusan Dewan Redaksi Admin</span>
               </h3>
 
               <div>
                 <label className="block text-xs font-bold text-[#b4d7cd] uppercase tracking-wider mb-1">
-                  Catatan Evaluasi Reviewer untuk Penulis:
+                  Catatan Evaluasi / Masukan Reviewer untuk Penulis:
                 </label>
                 <textarea
                   rows={3}
@@ -224,15 +240,15 @@ export const AdminVerificationView: React.FC<AdminVerificationViewProps> = ({ on
 
               <div className="pt-2 flex flex-wrap items-center gap-3">
                 <button
-                  onClick={() => handleUpdateStatus('APPROVED')}
+                  onClick={() => handleUpdateStatusAction('APPROVED')}
                   className="px-5 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs flex items-center gap-2 transition-colors shadow-md"
                 >
                   <Check size={16} />
-                  <span>Setujui & Terbitkan Naskah</span>
+                  <span>Setujui & Terbitkan ke Jurnal Live</span>
                 </button>
 
                 <button
-                  onClick={() => handleUpdateStatus('REVISION_NEEDED')}
+                  onClick={() => handleUpdateStatusAction('REVISION_NEEDED')}
                   className="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs flex items-center gap-2 transition-colors shadow-md"
                 >
                   <AlertTriangle size={16} />
@@ -240,7 +256,7 @@ export const AdminVerificationView: React.FC<AdminVerificationViewProps> = ({ on
                 </button>
 
                 <button
-                  onClick={() => handleUpdateStatus('REJECTED')}
+                  onClick={() => handleUpdateStatusAction('REJECTED')}
                   className="px-5 py-2.5 rounded-xl bg-red-800 hover:bg-red-700 text-white font-bold text-xs flex items-center gap-2 transition-colors shadow-md"
                 >
                   <XCircle size={16} />
