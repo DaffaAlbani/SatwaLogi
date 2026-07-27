@@ -50,10 +50,6 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectSpecies, onNavigateS
 
   return (
     <div className="space-y-10 sm:space-y-16 pb-16 sm:pb-20">
-      {/* SCREEN_13 Identifier Watermark Badge */}
-      <div className="bg-[#062e23] text-[#d4a373] text-[10px] sm:text-[11px] font-mono py-1 px-3 sm:px-4 text-center border-b border-[#d4a373]/30 truncate">
-        [SCREEN_13] Satwalogi - Beranda (Bahasa Indonesia)
-      </div>
 
       {/* Hero Section with Mobile Optimized Padding & Typography */}
       <section className="relative overflow-hidden bg-[#062e23] text-[#f9faf6] py-12 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 border-b border-[#d4a373]/20 shadow-xl">
@@ -271,7 +267,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectSpecies, onNavigateS
               onClick={() => onNavigateScreen('SCREEN_5')}
               className="bg-[#062e23] hover:bg-[#1a5948] text-[#d4a373] text-xs font-semibold px-4 py-2.5 rounded-xl transition-colors inline-flex items-center gap-1.5 self-start sm:self-auto"
             >
-              <span>Buka Layar Jurnal [SCREEN_5]</span>
+              <span>Buka Jurnal Ilmiah</span>
               <ArrowRight size={14} />
             </button>
           </div>

@@ -37,9 +37,9 @@ export const AdminVerificationView: React.FC<AdminVerificationViewProps> = ({
     onUpdateStatus(selectedItem.id, newStatus, reviewerComment);
 
     if (newStatus === 'APPROVED') {
-      alert(`🎉 Artikel "${selectedItem.articleTitle}" karya ${selectedItem.authorName} telah DISETUJUI & DITERBITKAN secara otomatis ke Jurnal Ilmiah [SCREEN_5] & Beranda!`);
+      alert(`🎉 Artikel "${selectedItem.articleTitle}" karya ${selectedItem.authorName} telah DISETUJUI & DITERBITKAN secara otomatis ke Jurnal Ilmiah & Beranda!`);
     } else if (newStatus === 'REVISION_NEEDED') {
-      alert(`📝 Permintaan revisi berhasil dikirimkan kepada ${selectedItem.authorName}. Status artikel diperbarui di Dasbor Penulis [SCREEN_8].`);
+      alert(`📝 Permintaan revisi berhasil dikirimkan kepada ${selectedItem.authorName}. Status artikel diperbarui di Dasbor Penulis.`);
     } else {
       alert(`❌ Artikel "${selectedItem.articleTitle}" ditolak.`);
     }
@@ -62,20 +62,16 @@ export const AdminVerificationView: React.FC<AdminVerificationViewProps> = ({
     return (
       <div className="max-w-4xl mx-auto py-20 text-center space-y-4 px-4">
         <h2 className="text-2xl font-serif font-bold text-[#062e23]">Belum Ada Naskah dalam Antrean</h2>
-        <p className="text-xs text-[#2d5a4c]">Silakan tulis artikel baru di Editor [SCREEN_12] untuk mengirimkan ke antrean ini.</p>
+        <p className="text-xs text-[#2d5a4c]">Silakan tulis artikel baru di Editor untuk mengirimkan ke antrean ini.</p>
         <button onClick={() => onNavigateScreen('SCREEN_12')} className="px-4 py-2 bg-[#062e23] text-white rounded-xl text-xs font-bold">
-          Ke Editor Artikel [SCREEN_12]
+          Ke Editor Artikel
         </button>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6 sm:space-y-8 pb-24">
-      {/* SCREEN_14 Identifier Watermark Badge */}
-      <div className="bg-[#062e23] text-[#d4a373] text-[10px] sm:text-[11px] font-mono py-1 px-3 sm:px-4 text-center border-b border-[#d4a373]/30 truncate">
-        [SCREEN_14] Admin - Verifikasi Artikel (Moderasi Peer-Review Dewan Editor)
-      </div>
+    <div className="space-y-6 sm:space-y-8 pb-24 pt-6">
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         {/* Header */}

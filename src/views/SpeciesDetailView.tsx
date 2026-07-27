@@ -47,12 +47,7 @@ export const SpeciesDetailView: React.FC<SpeciesDetailViewProps> = ({
 
   return (
     <div className="space-y-8 sm:space-y-12 pb-20">
-      {/* SCREEN_10 Identifier Watermark Badge */}
-      <div className="bg-[#062e23] text-[#d4a373] text-[10px] sm:text-[11px] font-mono py-1 px-3 sm:px-4 text-center border-b border-[#d4a373]/30 truncate">
-        [SCREEN_10] Satwalogi - Detail Spesies (Taxonomy & Distribution)
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8 pt-6">
         {/* Back Link */}
         <div className="flex items-center justify-between gap-2">
           <button
@@ -60,7 +55,7 @@ export const SpeciesDetailView: React.FC<SpeciesDetailViewProps> = ({
             className="inline-flex items-center gap-1.5 text-xs font-bold text-[#2d5a4c] hover:text-[#062e23] transition-colors"
           >
             <ArrowLeft size={16} />
-            <span>Kembali ke Katalog [SCREEN_13]</span>
+            <span>Kembali ke Katalog Satwa</span>
           </button>
 
           <button className="px-3 py-1.5 rounded-lg border border-[#062e23]/20 hover:bg-[#e8ede6] text-xs font-semibold text-[#062e23] flex items-center gap-1.5">

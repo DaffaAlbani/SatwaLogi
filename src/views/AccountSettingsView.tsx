@@ -57,12 +57,7 @@ export const AccountSettingsView: React.FC<AccountSettingsViewProps> = ({ user, 
   };
 
   return (
-    <div className="space-y-8 pb-24">
-      {/* SCREEN_6 Identifier Watermark Badge */}
-      <div className="bg-[#062e23] text-[#d4a373] text-[11px] font-mono py-1 px-4 text-center border-b border-[#d4a373]/30">
-        [SCREEN_6] Pengaturan Akun - Satwalogi (Account Settings)
-      </div>
-
+    <div className="space-y-8 pb-24 pt-6">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* Header */}
         <div className="border-b border-[#062e23]/10 pb-4">
@@ -87,7 +82,7 @@ export const AccountSettingsView: React.FC<AccountSettingsViewProps> = ({ user, 
               className="bg-[#d4a373] text-[#062e23] px-5 py-2 rounded-xl text-xs font-bold hover:bg-white transition-colors flex items-center gap-2 shrink-0"
             >
               <LogIn size={15} />
-              <span>Masuk / Daftar Portal [SCREEN_11]</span>
+              <span>Masuk / Daftar Portal</span>
             </button>
           </div>
         )}

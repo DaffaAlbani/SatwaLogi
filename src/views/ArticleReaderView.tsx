@@ -57,12 +57,7 @@ export const ArticleReaderView: React.FC<ArticleReaderViewProps> = ({
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${getThemeClass()} pb-24`}>
-      {/* SCREEN_5 Identifier Watermark Badge */}
-      <div className="bg-[#062e23] text-[#d4a373] text-[11px] font-mono py-1 px-4 text-center border-b border-[#d4a373]/30">
-        [SCREEN_5] Satwalogi - Baca Artikel Scientific (Scientific Journal Reader)
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 space-y-8">
         {/* Navigation Back & Control Bar */}
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-current/10 pb-4">
           <button
@@ -70,7 +65,7 @@ export const ArticleReaderView: React.FC<ArticleReaderViewProps> = ({
             className="inline-flex items-center gap-2 text-xs font-bold text-[#2d5a4c] hover:opacity-80 transition-opacity"
           >
             <ArrowLeft size={16} />
-            <span>Kembali ke Beranda [SCREEN_13]</span>
+            <span>Kembali ke Beranda</span>
           </button>
 
           {/* Reader Customization Toolbar */}

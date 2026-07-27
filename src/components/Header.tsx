@@ -7,7 +7,6 @@ import {
   LayoutDashboard, 
   Settings, 
   Compass, 
-  Layers,
   Menu,
   X,
   LogIn,
@@ -30,17 +29,6 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const screensList = [
-    { id: 'SCREEN_13', name: '13. Beranda Satwalogi', badge: 'Public' },
-    { id: 'SCREEN_10', name: '10. Detail Spesies (Taxonomy)', badge: 'Public' },
-    { id: 'SCREEN_5', name: '5. Baca Artikel Scientific', badge: 'Journal' },
-    { id: 'SCREEN_12', name: '12. Editor Artikel (Penulis)', badge: 'Author' },
-    { id: 'SCREEN_14', name: '14. Verifikasi Admin (Moderasi)', badge: 'Admin' },
-    { id: 'SCREEN_11', name: '11. Masuk & Daftar (Auth)', badge: 'Auth' },
-    { id: 'SCREEN_8', name: '8. Dasbor Penulis', badge: 'Author' },
-    { id: 'SCREEN_6', name: '6. Pengaturan Akun', badge: 'User' },
-  ];
-
   const handleNavClick = (screenId: string) => {
     onNavigateScreen(screenId);
     setIsMobileMenuOpen(false);
@@ -48,32 +36,6 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="sticky top-0 z-40 w-full bg-[#f9faf6]/95 backdrop-blur-md border-b border-[#062e23]/10 transition-all shadow-sm">
-      {/* Top Banner / Screen Quick Switcher Bar */}
-      <div className="bg-[#062e23] text-[#e8ede6] text-xs py-1.5 px-4 overflow-x-auto">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2 shrink-0 font-medium text-[#d4a373]">
-            <Layers size={14} />
-            <span className="hidden sm:inline">Botanical Intellect Switcher:</span>
-            <span className="sm:hidden">Pilih Layar:</span>
-          </div>
-          <div className="flex items-center gap-1.5 overflow-x-auto py-0.5 no-scrollbar">
-            {screensList.map((sc) => (
-              <button
-                key={sc.id}
-                onClick={() => handleNavClick(sc.id)}
-                className={`px-2.5 py-0.5 rounded-full text-[11px] font-medium whitespace-nowrap transition-all flex items-center gap-1 ${
-                  currentScreenId === sc.id
-                    ? 'bg-[#d4a373] text-[#062e23] font-bold shadow-sm'
-                    : 'bg-[#1a5948]/60 hover:bg-[#2d5a4c] text-[#e8ede6]'
-                }`}
-              >
-                <span>{sc.name}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
       {/* Main Navbar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
         {/* Brand Logo */}
@@ -157,7 +119,7 @@ export const Header: React.FC<HeaderProps> = ({
             }`}
           >
             <ShieldCheck size={16} />
-            <span>Verifikasi</span>
+            <span>Verifikasi Admin</span>
           </button>
         </nav>
 

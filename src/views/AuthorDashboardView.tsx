@@ -43,11 +43,7 @@ export const AuthorDashboardView: React.FC<AuthorDashboardViewProps> = ({
   };
 
   return (
-    <div className="space-y-8 pb-24">
-      {/* SCREEN_8 Identifier Watermark Badge */}
-      <div className="bg-[#062e23] text-[#d4a373] text-[11px] font-mono py-1 px-4 text-center border-b border-[#d4a373]/30">
-        [SCREEN_8] Dasbor Penulis - Satwalogi (Manajemen Naskah User)
-      </div>
+    <div className="space-y-8 pb-24 pt-6">
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* Guest Banner if not logged in */}
@@ -62,7 +58,7 @@ export const AuthorDashboardView: React.FC<AuthorDashboardViewProps> = ({
               className="bg-[#d4a373] text-[#062e23] px-5 py-2.5 rounded-xl font-bold text-xs hover:bg-white transition-colors flex items-center gap-2 shrink-0 shadow-md"
             >
               <LogIn size={16} />
-              <span>Masuk / Daftar [SCREEN_11]</span>
+              <span>Masuk / Daftar</span>
             </button>
           </div>
         )}
@@ -93,7 +89,7 @@ export const AuthorDashboardView: React.FC<AuthorDashboardViewProps> = ({
               className="bg-[#d4a373] hover:bg-white text-[#062e23] px-5 py-3 rounded-2xl font-bold text-xs transition-colors flex items-center gap-2 shadow-md shrink-0"
             >
               <Plus size={18} />
-              <span>Tulis & Submit Artikel Baru [SCREEN_12]</span>
+              <span>Tulis & Submit Artikel Baru</span>
             </button>
           </div>
         )}
@@ -201,14 +197,14 @@ export const AuthorDashboardView: React.FC<AuthorDashboardViewProps> = ({
                           <button
                             onClick={() => onNavigateScreen('SCREEN_12')}
                             className="p-2 rounded-lg bg-[#e8ede6] hover:bg-[#062e23] text-[#062e23] hover:text-[#f9faf6] transition-colors"
-                            title="Edit Naskah di Editor [SCREEN_12]"
+                            title="Edit Naskah di Editor"
                           >
                             <Edit3 size={15} />
                           </button>
                           <button
                             onClick={() => onNavigateScreen('SCREEN_14')}
                             className="p-2 rounded-lg bg-[#062e23] text-[#d4a373] hover:bg-[#1a5948] transition-colors"
-                            title="Tinjau di Panel Admin Verifikasi [SCREEN_14]"
+                            title="Tinjau di Panel Admin Verifikasi"
                           >
                             <ExternalLink size={15} />
                           </button>

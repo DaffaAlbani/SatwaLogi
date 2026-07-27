@@ -31,16 +31,12 @@ export const AuthView: React.FC<AuthViewProps> = ({ onNavigateScreen, onLoginSuc
     if (onLoginSuccess) {
       onLoginSuccess(role, fullName, email, institution);
     }
-    alert(`Berhasil Masuk sebagai "${fullName}" (${role}) dari ${institution}! Anda sekarang dapat menulis artikel di Editor [SCREEN_12] atau mengelola status di Dasbor [SCREEN_8].`);
+    alert(`Berhasil Masuk sebagai "${fullName}" (${role}) dari ${institution}! Anda sekarang dapat menulis artikel di Editor atau mengelola status di Dasbor Penulis.`);
     onNavigateScreen('SCREEN_8');
   };
 
   return (
     <div className="min-h-[85vh] py-12 flex items-center justify-center px-4 sm:px-6 lg:px-8">
-      {/* SCREEN_11 Identifier Watermark Badge */}
-      <div className="fixed top-20 right-4 bg-[#062e23] text-[#d4a373] text-[10px] font-mono py-1 px-3 rounded-full border border-[#d4a373]/30 z-30 shadow-md">
-        [SCREEN_11] Auth Portal User & Admin
-      </div>
 
       <div className="max-w-5xl w-full bg-white rounded-3xl border border-[#062e23]/10 shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12">
         {/* Left Side: Immersive Nature Visual Backdrop (5 cols) */}
@@ -219,10 +215,10 @@ export const AuthView: React.FC<AuthViewProps> = ({ onNavigateScreen, onLoginSuc
           {/* Quick Shortcuts */}
           <div className="pt-4 border-t border-[#062e23]/10 flex flex-wrap items-center justify-between text-xs text-[#2d5a4c]">
             <button onClick={() => onNavigateScreen('SCREEN_12')} className="hover:underline font-semibold">
-              Ke Editor Penulisan Artikel [SCREEN_12] →
+              Ke Editor Penulisan Artikel →
             </button>
             <button onClick={() => onNavigateScreen('SCREEN_14')} className="hover:underline font-semibold">
-              Ke Verifikasi Admin [SCREEN_14] →
+              Ke Verifikasi Admin →
             </button>
           </div>
         </div>

@@ -81,12 +81,7 @@ Hasil inventarisasi menunjukkan kepadatan rata-rata 0.68 sarang/km². Tajuk poho
   };
 
   return (
-    <div className="space-y-8 pb-24">
-      {/* SCREEN_12 Identifier Watermark Badge */}
-      <div className="bg-[#062e23] text-[#d4a373] text-[11px] font-mono py-1 px-4 text-center border-b border-[#d4a373]/30">
-        [SCREEN_12] Penulis - Editor Artikel (User Submission Portal)
-      </div>
-
+    <div className="space-y-8 pb-24 pt-6">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         {/* Header & Status Notice */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#062e23]/10 pb-4">
@@ -116,7 +111,7 @@ Hasil inventarisasi menunjukkan kepadatan rata-rata 0.68 sarang/km². Tajuk poho
                 className="bg-[#062e23] text-[#d4a373] px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm"
               >
                 <LogIn size={15} />
-                <span>Masuk Akun Pengguna [SCREEN_11]</span>
+                <span>Masuk Akun Pengguna</span>
               </button>
             )}
 
@@ -139,7 +134,7 @@ Hasil inventarisasi menunjukkan kepadatan rata-rata 0.68 sarang/km². Tajuk poho
           <div className="bg-[#e8ede6] border border-[#062e23]/20 p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
             <div className="flex items-center gap-2">
               <AlertCircle size={18} className="text-[#2d5a4c] shrink-0" />
-              <span>Anda belum login. Anda dapat langsung mengirim sebagai <strong>Penulis Tamu</strong> atau <strong>Masuk Portal [SCREEN_11]</strong>.</span>
+              <span>Anda belum login. Anda dapat langsung mengirim sebagai <strong>Penulis Tamu</strong> atau <strong>Masuk Portal</strong>.</span>
             </div>
             <button
               type="button"
@@ -166,13 +161,13 @@ Hasil inventarisasi menunjukkan kepadatan rata-rata 0.68 sarang/km². Tajuk poho
                 onClick={() => onNavigateScreen('SCREEN_14')}
                 className="bg-[#d4a373] text-[#062e23] px-4 py-2 rounded-xl text-xs font-bold hover:bg-white transition-colors flex items-center gap-1.5 shadow-md"
               >
-                <span>Periksa sebagai Admin di Verifikasi [SCREEN_14]</span>
+                <span>Periksa sebagai Admin di Verifikasi</span>
               </button>
               <button
                 onClick={() => onNavigateScreen('SCREEN_8')}
                 className="bg-[#1a5948] text-[#f9faf6] px-4 py-2 rounded-xl text-xs font-bold hover:bg-[#2d5a4c] transition-colors border border-[#d4a373]/30"
               >
-                <span>Lihat Status di Dasbor Penulis [SCREEN_8]</span>
+                <span>Lihat Status di Dasbor Penulis</span>
               </button>
             </div>
           </div>
@@ -382,7 +377,7 @@ Hasil inventarisasi menunjukkan kepadatan rata-rata 0.68 sarang/km². Tajuk poho
                 Kirim Naskah Karya {authorName} ke Verifikasi Admin?
               </div>
               <p className="text-xs text-[#b4d7cd]">
-                Setelah dikirim, naskah akan langsung muncul di antrean moderasi Admin Verifikasi [SCREEN_14].
+                Setelah dikirim, naskah akan langsung muncul di antrean moderasi Admin Verifikasi.
               </p>
             </div>
 
@@ -391,7 +386,7 @@ Hasil inventarisasi menunjukkan kepadatan rata-rata 0.68 sarang/km². Tajuk poho
               className="bg-[#d4a373] hover:bg-white text-[#062e23] px-6 py-3 rounded-xl font-bold text-xs transition-colors flex items-center gap-2 shadow-md shrink-0"
             >
               <Send size={16} />
-              <span>Kirimkan Ke Admin Verifikasi [SCREEN_14]</span>
+              <span>Kirimkan Ke Admin Verifikasi</span>
             </button>
           </div>
         </form>
