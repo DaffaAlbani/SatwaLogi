@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: #062e23;
+    --color-surface: #f9faf6;
+    --color-ochre: #d4a373;
+    --color-sage: #2d5a4c;
+    --color-sage-light: #e8ede6;
+  }
+
+  body {
+    background-color: var(--color-surface);
+    color: var(--color-primary);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  h1, h2, h3, .font-serif-heading {
+    font-family: 'Source Serif 4', Georgia, serif;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f4ef;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2d5a4c;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #062e23;
+}
+
+/* Academic citation highlight */
+.citation-link {
+  color: #2d5a4c;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 1px dashed #2d5a4c;
+  transition: all 0.2s ease;
+}
+
+.citation-link:hover {
+  color: #062e23;
+  background-color: #e8ede6;
+  border-bottom-style: solid;
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  background: rgba(249, 250, 246, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(6, 46, 35, 0.1);
+}
+
+.glass-dark {
+  background: rgba(6, 46, 35, 0.92);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
