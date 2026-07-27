@@ -37,11 +37,11 @@ export const AdminVerificationView: React.FC<AdminVerificationViewProps> = ({
     onUpdateStatus(selectedItem.id, newStatus, reviewerComment);
 
     if (newStatus === 'APPROVED') {
-      alert(`🎉 Artikel "${selectedItem.articleTitle}" karya ${selectedItem.authorName} telah DISETUJUI & DITERBITKAN secara otomatis ke Jurnal Ilmiah & Beranda!`);
+      alert(`Artikel "${selectedItem.articleTitle}" berhasil disetujui dan diterbitkan.`);
     } else if (newStatus === 'REVISION_NEEDED') {
-      alert(`📝 Permintaan revisi berhasil dikirimkan kepada ${selectedItem.authorName}. Status artikel diperbarui di Dasbor Penulis.`);
+      alert('Permintaan revisi telah dikirim ke penulis.');
     } else {
-      alert(`❌ Artikel "${selectedItem.articleTitle}" ditolak.`);
+      alert('Artikel ditolak.');
     }
   };
 

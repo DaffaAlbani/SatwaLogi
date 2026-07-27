@@ -72,7 +72,7 @@ export function App() {
 
   const handleLogout = () => {
     setUser(null);
-    alert('Anda telah keluar (logout) dari akun. Kembali ke mode pengunjung tamu.');
+    alert('Anda telah keluar dari akun.');
     setCurrentScreenId('SCREEN_13');
   };
 

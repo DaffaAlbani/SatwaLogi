@@ -77,7 +77,7 @@ export const AuthView: React.FC<AuthViewProps> = ({ onNavigateScreen, onLoginSuc
         if (onLoginSuccess) {
           onLoginSuccess('Admin', 'Admin Satwalogi', 'admin@satwalogi.or.id', 'Pusat Admin Satwalogi');
         }
-        alert('🔑 Berhasil Masuk sebagai ADMIN SATWALOGI! Anda dapat memverifikasi dan menerbitkan naskah user di menu Verifikasi Admin.');
+        alert('Berhasil masuk sebagai Admin Satwalogi.');
         onNavigateScreen('SCREEN_14');
         return;
       }
@@ -93,14 +93,12 @@ export const AuthView: React.FC<AuthViewProps> = ({ onNavigateScreen, onLoginSuc
         if (onLoginSuccess) {
           onLoginSuccess(matchedUser.role, matchedUser.name, matchedUser.email, matchedUser.institution);
         }
-        alert(`🎉 Selamat Datang Kembali, ${matchedUser.name}! Anda berhasil masuk.`);
+        alert(`Berhasil masuk sebagai ${matchedUser.name}.`);
         onNavigateScreen('SCREEN_8');
       } else {
         // User not registered or incorrect password!
-        const notRegisteredMessage = `❌ AKUN BELUM TERDAFTAR ATAU KATA SANDI SALAH!\n\nEmail/Username "${usernameOrEmail}" belum terdaftar di database Satwalogi. Pengguna yang belum terdaftar TIDAK DIPERBOLEHKAN MASUK.\n\nSilakan klik OK untuk berpindah ke formulir "Daftar Baru (Register)" terlebih dahulu.`;
-        
-        setLoginError(`Email/Username "${usernameOrEmail}" belum terdaftar di sistem database. Silakan daftar akun baru terlebih dahulu.`);
-        alert(notRegisteredMessage);
+        setLoginError('Akun belum terdaftar. Silakan daftar akun baru terlebih dahulu.');
+        alert('Akun belum terdaftar. Silakan daftar akun baru terlebih dahulu.');
         
         // Auto-switch to Register Mode
         setAuthMode('REGISTER');
@@ -109,7 +107,7 @@ export const AuthView: React.FC<AuthViewProps> = ({ onNavigateScreen, onLoginSuc
     } else {
       // REGISTER MODE
       if (!fullName.trim() || !registerEmail.trim() || !registerPassword.trim()) {
-        alert('Mohon lengkapi Nama Lengkap, Email, dan Kata Sandi!');
+        alert('Mohon lengkapi Nama Lengkap, Email, dan Kata Sandi.');
         return;
       }
 
@@ -118,7 +116,7 @@ export const AuthView: React.FC<AuthViewProps> = ({ onNavigateScreen, onLoginSuc
       // Check if email already registered in database
       const alreadyRegistered = userDb.some((u) => u.email.toLowerCase() === cleanEmail);
       if (alreadyRegistered) {
-        alert(`⚠️ Email "${registerEmail}" sudah terdaftar sebelumnya! Silakan pindah ke tab "Masuk Akun" untuk login.`);
+        alert('Email sudah terdaftar. Silakan masuk ke akun Anda.');
         setAuthMode('LOGIN');
         setUsernameOrEmail(cleanEmail);
         return;
@@ -142,7 +140,7 @@ export const AuthView: React.FC<AuthViewProps> = ({ onNavigateScreen, onLoginSuc
         onLoginSuccess('Penulis', newUser.name, newUser.email, newUser.institution);
       }
 
-      alert(`🎉 PENDAFTARAN BERHASIL!\n\nAkun atas nama "${newUser.name}" telah tersimpan secara resmi di database Satwalogi.\n\nAnda sekarang telah masuk dan dapat langsung menulis artikel baru!`);
+      alert(`Pendaftaran akun berhasil! Selamat datang, ${newUser.name}.`);
       onNavigateScreen('SCREEN_8');
     }
   };
