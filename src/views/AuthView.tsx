@@ -199,17 +199,6 @@ export const AuthView: React.FC<AuthViewProps> = ({ onNavigateScreen, onLoginSuc
                     </button>
                   </div>
                 </div>
-
-                {/* Dedicated Admin Credentials Quick Hint */}
-                <div className="bg-[#e8ede6] p-3.5 rounded-xl border border-[#062e23]/15 text-xs text-[#062e23] space-y-1">
-                  <div className="font-bold flex items-center gap-1.5 text-[#2d5a4c]">
-                    <KeyRound size={14} className="text-[#d4a373]" />
-                    <span>Akses Khusus Admin Satwalogi:</span>
-                  </div>
-                  <div className="font-mono text-[11px] opacity-90 pl-5">
-                    Username: <strong className="text-[#062e23]">admin</strong> | Password: <strong className="text-[#062e23]">admin123</strong>
-                  </div>
-                </div>
               </>
             ) : (
               /* REGISTER MODE FIELDS */
