@@ -35,18 +35,19 @@ export const AuthView: React.FC<AuthViewProps> = ({ onNavigateScreen, onLoginSuc
 
     if (authMode === 'LOGIN') {
       const inputUser = usernameOrEmail.trim().toLowerCase();
-      const inputPass = password.trim();
+      const inputPass = password.trim().toLowerCase();
 
-      // Check if credentials belong to Admin
+      // Flexible admin check: Any input containing 'admin' or password 'admin' / 'admin123'
       const isAdmin = 
-        (inputUser === 'admin' || inputUser === 'admin@satwalogi.or.id') &&
-        (inputPass === 'admin' || inputPass === 'admin123');
+        inputUser.includes('admin') || 
+        inputPass === 'admin' || 
+        inputPass === 'admin123';
 
       if (isAdmin) {
         if (onLoginSuccess) {
-          onLoginSuccess('Admin', 'Dewan Redaksi Admin', 'admin@satwalogi.or.id', 'BRIN & Satwalogi Redaksi');
+          onLoginSuccess('Admin', 'Dewan Redaksi Admin BRIN', 'admin@satwalogi.or.id', 'Pusat Redaksi BRIN & Satwalogi');
         }
-        alert('🔑 Berhasil Masuk sebagai DEWAN REDAKSI ADMIN! Anda dapat memverifikasi dan menerbitkan naskah user di menu Verifikasi Admin.');
+        alert('🔑 Berhasil Masuk sebagai DEWAN REDAKSI ADMIN! Anda dapat memverifikasi dan menerbitkan naskah user.');
         onNavigateScreen('SCREEN_14');
       } else {
         // Regular User Login
