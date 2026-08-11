@@ -14,6 +14,7 @@ import {
   FileText
 } from 'lucide-react';
 import { AdminVerificationItem } from '../data/satwaData';
+import { useToast } from '../components/Toast';
 
 interface AdminVerificationViewProps {
   queue: AdminVerificationItem[];
@@ -26,6 +27,7 @@ export const AdminVerificationView: React.FC<AdminVerificationViewProps> = ({
   onUpdateStatus, 
   onNavigateScreen 
 }) => {
+  const { showToast } = useToast();
   const [selectedItemId, setSelectedItemId] = useState<string>(queue[0]?.id || '');
   const [reviewerComment, setReviewerComment] = useState<string>(queue[0]?.reviewerNotes || '');
   const [mobileTab, setMobileTab] = useState<'QUEUE' | 'DETAILS'>('QUEUE');
@@ -37,11 +39,11 @@ export const AdminVerificationView: React.FC<AdminVerificationViewProps> = ({
     onUpdateStatus(selectedItem.id, newStatus, reviewerComment);
 
     if (newStatus === 'APPROVED') {
-      alert(`Artikel "${selectedItem.articleTitle}" berhasil disetujui dan diterbitkan.`);
+      showToast(`Artikel "${selectedItem.articleTitle}" berhasil disetujui dan diterbitkan.`, 'success');
     } else if (newStatus === 'REVISION_NEEDED') {
-      alert('Permintaan revisi telah dikirim ke penulis.');
+      showToast('Permintaan revisi telah dikirim ke penulis.', 'info');
     } else {
-      alert('Artikel ditolak.');
+      showToast('Artikel ditolak.', 'error');
     }
   };
 
@@ -74,32 +76,33 @@ export const AdminVerificationView: React.FC<AdminVerificationViewProps> = ({
     <div className="space-y-6 sm:space-y-8 pb-24 pt-6">
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#062e23]/10 pb-4">
-          <div>
-            <div className="flex items-center gap-2 text-xs font-bold text-[#2d5a4c] uppercase tracking-wider">
+        {/* Header Banner */}
+        <div className="hero-gradient rounded-3xl p-6 sm:p-8 text-[#f9faf6] border border-[#d4a373]/30 shadow-xl relative overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="hero-particles" />
+          <div className="space-y-1 relative z-10">
+            <div className="flex items-center gap-2 text-xs font-bold text-[#d4a373] uppercase tracking-widest">
               <ShieldCheck size={16} />
-              <span>Panel Moderasi Admin Verifikasi Artikel User</span>
+              <span>Panel Moderasi Admin</span>
             </div>
-            <h1 className="text-xl sm:text-3xl font-serif font-bold text-[#062e23] mt-0.5">
+            <h1 className="text-xl sm:text-3xl font-serif font-bold text-white mt-0.5">
               Verifikasi Naskah Masuk
             </h1>
           </div>
 
-          <div className="flex items-center gap-2">
-            <div className="bg-[#e8ede6] px-3 py-1.5 rounded-xl text-xs font-semibold text-[#062e23] flex items-center gap-1.5">
-              <UserCheck size={15} className="text-[#2d5a4c]" />
-              <span>Admin BRIN</span>
+          <div className="flex items-center gap-2 relative z-10">
+            <div className="glass-card-dark px-4 py-2 rounded-xl text-xs font-bold text-[#d4a373] flex items-center gap-2 border border-[#d4a373]/30">
+              <UserCheck size={16} />
+              <span>Admin BRIN Moderator</span>
             </div>
           </div>
         </div>
 
         {/* Mobile Tab Toggle (< 1024px) */}
-        <div className="flex lg:hidden bg-[#e8ede6] p-1 rounded-xl border border-[#062e23]/10 text-xs font-bold">
+        <div className="flex lg:hidden bg-[#e8ede6] p-1.5 rounded-2xl border border-[#062e23]/10 text-xs font-bold">
           <button
             onClick={() => setMobileTab('QUEUE')}
-            className={`flex-1 py-2 rounded-lg flex items-center justify-center gap-1.5 transition-all ${
-              mobileTab === 'QUEUE' ? 'bg-[#062e23] text-[#f9faf6] shadow' : 'text-[#062e23]'
+            className={`flex-1 py-2.5 rounded-xl flex items-center justify-center gap-1.5 transition-all ${
+              mobileTab === 'QUEUE' ? 'bg-[#062e23] text-[#d4a373] shadow' : 'text-[#062e23]'
             }`}
           >
             <ListFilter size={14} />
@@ -108,8 +111,8 @@ export const AdminVerificationView: React.FC<AdminVerificationViewProps> = ({
 
           <button
             onClick={() => setMobileTab('DETAILS')}
-            className={`flex-1 py-2 rounded-lg flex items-center justify-center gap-1.5 transition-all ${
-              mobileTab === 'DETAILS' ? 'bg-[#062e23] text-[#f9faf6] shadow' : 'text-[#062e23]'
+            className={`flex-1 py-2.5 rounded-xl flex items-center justify-center gap-1.5 transition-all ${
+              mobileTab === 'DETAILS' ? 'bg-[#062e23] text-[#d4a373] shadow' : 'text-[#062e23]'
             }`}
           >
             <FileText size={14} />
@@ -121,8 +124,8 @@ export const AdminVerificationView: React.FC<AdminVerificationViewProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
           {/* Left Column: Queue List */}
           <div className={`lg:col-span-4 space-y-4 ${mobileTab === 'DETAILS' ? 'hidden lg:block' : 'block'}`}>
-            <div className="bg-white rounded-2xl p-4 border border-[#062e23]/10 shadow-sm space-y-3">
-              <div className="flex items-center justify-between font-serif font-bold text-sm text-[#062e23] border-b border-[#062e23]/10 pb-2">
+            <div className="glass-card rounded-2xl p-4 border border-[#062e23]/10 space-y-3">
+              <div className="flex items-center justify-between font-serif font-bold text-sm text-[#062e23] border-b border-[#062e23]/8 pb-2">
                 <span>Antrean Naskah ({queue.length})</span>
                 <RefreshCw size={14} className="text-[#2d5a4c] cursor-pointer hover:rotate-180 transition-transform" />
               </div>

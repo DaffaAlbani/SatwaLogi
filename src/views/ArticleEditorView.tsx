@@ -17,6 +17,7 @@ import {
   Upload
 } from 'lucide-react';
 import { SPECIES_DATA, AdminVerificationItem, UserProfile } from '../data/satwaData';
+import { useToast } from '../components/Toast';
 
 interface ArticleEditorViewProps {
   currentUser: UserProfile | null;
@@ -38,6 +39,7 @@ export const ArticleEditorView: React.FC<ArticleEditorViewProps> = ({
   onNavigateScreen, 
   onSubmitArticle 
 }) => {
+  const { showToast } = useToast();
   const [guestName, setGuestName] = useState('');
   const [guestInstitution, setGuestInstitution] = useState('');
   const [title, setTitle] = useState('');
@@ -76,11 +78,11 @@ export const ArticleEditorView: React.FC<ArticleEditorViewProps> = ({
   const handleSubmitPeerReview = (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim()) {
-      alert('Mohon isi Judul Artikel Ilmiah!');
+      showToast('Mohon isi Judul Artikel Ilmiah!', 'warning');
       return;
     }
     if (!authorName.trim()) {
-      alert('Mohon isi Nama Lengkap Penulis!');
+      showToast('Mohon isi Nama Lengkap Penulis!', 'warning');
       return;
     }
 
@@ -89,6 +91,7 @@ export const ArticleEditorView: React.FC<ArticleEditorViewProps> = ({
       id: newId,
       articleTitle: title,
       authorName: authorName,
+      authorEmail: currentUser ? currentUser.email : '',
       authorInstitution: authorInst,
       category: category,
       submittedDate: 'Hari ini',
@@ -157,15 +160,15 @@ export const ArticleEditorView: React.FC<ArticleEditorViewProps> = ({
 
         {/* Unauthenticated Guest Notice */}
         {!currentUser && (
-          <div className="bg-[#e8ede6] border border-[#062e23]/20 p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+          <div className="glass-card p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 text-xs border border-[#062e23]/10">
             <div className="flex items-center gap-2">
-              <AlertCircle size={18} className="text-[#2d5a4c] shrink-0" />
+              <AlertCircle size={18} className="text-[#d4a373] shrink-0" />
               <span>Anda belum login. Anda dapat langsung menulis sebagai <strong>Penulis Tamu</strong> atau <strong>Masuk Portal Login</strong>.</span>
             </div>
             <button
               type="button"
               onClick={() => onNavigateScreen('SCREEN_11')}
-              className="bg-[#062e23] text-white px-3.5 py-1.5 rounded-xl font-bold shrink-0 hover:bg-[#1a5948] transition-colors"
+              className="bg-[#062e23] text-[#d4a373] px-4 py-2 rounded-xl font-bold shrink-0 hover:bg-[#1a5948] transition-colors shadow-sm"
             >
               Portal Login User / Admin
             </button>
@@ -174,24 +177,25 @@ export const ArticleEditorView: React.FC<ArticleEditorViewProps> = ({
 
         {/* Success Alert Banner if Submitted */}
         {submittedItem && (
-          <div className="bg-emerald-900 text-[#f9faf6] p-6 rounded-2xl border border-emerald-700 space-y-3 animate-fadeIn shadow-xl">
-            <div className="flex items-center gap-2 text-[#d4a373] font-bold text-base">
-              <CheckCircle2 size={22} />
+          <div className="hero-gradient text-[#f9faf6] p-6 sm:p-8 rounded-3xl border border-[#d4a373]/30 space-y-4 shadow-2xl relative overflow-hidden">
+            <div className="hero-particles" />
+            <div className="flex items-center gap-2.5 text-[#d4a373] font-bold text-base relative z-10">
+              <CheckCircle2 size={24} />
               <span>Naskah Berhasil Dikirim ke Antrean Moderasi Admin (ID: {submittedItem.id})!</span>
             </div>
-            <p className="text-xs text-[#e8ede6]/90 leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#e8ede6]/90 leading-relaxed font-sans relative z-10">
               Artikel karya <strong>{authorName}</strong> berjudul <em>"{submittedItem.articleTitle}"</em> telah masuk ke antrean verifikasi dengan status <span className="text-[#d4a373] font-bold">"PENDING"</span>. Admin sekarang dapat meninjau, menyetujui, atau meminta revisi di panel Admin Verifikasi.
             </p>
-            <div className="pt-2 flex flex-wrap items-center gap-3">
+            <div className="pt-2 flex flex-wrap items-center gap-3 relative z-10">
               <button
                 onClick={() => onNavigateScreen('SCREEN_14')}
-                className="bg-[#d4a373] text-[#062e23] px-4 py-2 rounded-xl text-xs font-bold hover:bg-white transition-colors flex items-center gap-1.5 shadow-md"
+                className="shimmer-btn bg-gradient-to-r from-[#d4a373] to-[#e8c9a4] text-[#062e23] px-5 py-2.5 rounded-xl text-xs font-bold hover:scale-[1.02] transition-all flex items-center gap-1.5 shadow-md"
               >
                 <span>Periksa sebagai Admin di Verifikasi</span>
               </button>
               <button
                 onClick={() => onNavigateScreen('SCREEN_8')}
-                className="bg-[#1a5948] text-[#f9faf6] px-4 py-2 rounded-xl text-xs font-bold hover:bg-[#2d5a4c] transition-colors border border-[#d4a373]/30"
+                className="bg-white/10 hover:bg-white/20 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all border border-white/20"
               >
                 <span>Lihat Status di Dasbor Penulis</span>
               </button>

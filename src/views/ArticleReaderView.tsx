@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   BookOpen, 
   Download, 
@@ -13,25 +13,44 @@ import {
   ArrowLeft,
   X,
   PenTool,
-  User
+  User,
+  Sparkles
 } from 'lucide-react';
 import { JournalArticle } from '../data/satwaData';
+import { useToast } from '../components/Toast';
 
 interface ArticleReaderViewProps {
   article?: JournalArticle | null;
   onNavigateScreen: (screenId: string) => void;
 }
 
+function useScrollReveal() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('in-view'); }),
+      { threshold: 0.06, rootMargin: '0px 0px -30px 0px' }
+    );
+    el.querySelectorAll('.reveal, .reveal-scale').forEach((elem) => observer.observe(elem));
+    return () => observer.disconnect();
+  }, []);
+  return ref;
+}
+
 export const ArticleReaderView: React.FC<ArticleReaderViewProps> = ({ 
   article, 
   onNavigateScreen 
 }) => {
+  const { showToast } = useToast();
   const [fontSize, setFontSize] = useState<'normal' | 'large' | 'xlarge'>('normal');
   const [columnLayout, setColumnLayout] = useState<'single' | 'double'>('single');
   const [readingTheme, setReadingTheme] = useState<'light' | 'sepia' | 'dark'>('light');
   const [activeCitation, setActiveCitation] = useState<number | null>(null);
   const [showCitationModal, setShowCitationModal] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const containerRef = useScrollReveal();
 
   const getFontSizeClass = () => {
     switch (fontSize) {
@@ -44,7 +63,7 @@ export const ArticleReaderView: React.FC<ArticleReaderViewProps> = ({
   const getThemeClass = () => {
     switch (readingTheme) {
       case 'sepia': return 'bg-[#f4ecd8] text-[#433422] border-[#e2d7be]';
-      case 'dark': return 'bg-[#0a1814] text-[#e8ede6] border-[#1a5948]';
+      case 'dark': return 'bg-[#031913] text-[#e8ede6] border-[#1a5948]';
       default: return 'bg-[#f9faf6] text-[#062e23] border-[#062e23]/10';
     }
   };
@@ -61,24 +80,24 @@ export const ArticleReaderView: React.FC<ArticleReaderViewProps> = ({
         </div>
         <h2 className="text-2xl font-serif font-bold text-[#062e23]">Belum Ada Artikel Ilmiah Terpilih</h2>
         <p className="text-xs text-[#2d5a4c] max-w-md leading-relaxed">
-          Semua sampel artikel telah dibersihkan. Tulis naskah baru di Editor Artikel dan kirimkan ke verifikasi admin untuk diterbitkan di sini!
+          Silakan pilih salah satu artikel ilmiah terpublikasi dari beranda atau katalog jurnal untuk mulai membaca.
         </p>
         <button
-          onClick={() => onNavigateScreen('SCREEN_12')}
-          className="bg-[#062e23] text-[#d4a373] hover:bg-[#1a5948] px-5 py-2.5 rounded-xl text-xs font-bold transition-colors inline-flex items-center gap-2 shadow-md"
+          onClick={() => onNavigateScreen('SCREEN_13')}
+          className="shimmer-btn bg-gradient-to-r from-[#062e23] to-[#1a5948] text-[#d4a373] px-5 py-2.5 rounded-xl text-xs font-bold transition-all inline-flex items-center gap-2 shadow-md"
         >
-          <PenTool size={16} />
-          <span>Tulis Artikel Baru</span>
+          <BookOpen size={16} />
+          <span>Jelajahi Artikel Ilmiah</span>
         </button>
       </div>
     );
   }
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${getThemeClass()} pb-24`}>
+    <div ref={containerRef} className={`min-h-screen transition-colors duration-300 ${getThemeClass()} pb-24`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 space-y-8">
         {/* Navigation Back & Control Bar */}
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-current/10 pb-4">
+        <div className="reveal flex flex-wrap items-center justify-between gap-4 border-b border-current/10 pb-4">
           <button
             onClick={() => onNavigateScreen('SCREEN_13')}
             className="inline-flex items-center gap-2 text-xs font-bold text-[#2d5a4c] hover:opacity-80 transition-opacity"
@@ -148,14 +167,14 @@ export const ArticleReaderView: React.FC<ArticleReaderViewProps> = ({
         </div>
 
         {/* Journal Header Info */}
-        <header className="space-y-6 max-w-4xl mx-auto">
+        <header className="reveal space-y-6 max-w-4xl mx-auto">
           <div className="flex flex-wrap items-center gap-3">
-            <span className="px-3 py-1 rounded-full bg-[#062e23] text-[#d4a373] text-xs font-bold">
+            <span className="px-3 py-1 rounded-xl bg-[#062e23] text-[#d4a373] text-xs font-bold shadow-sm">
               {article.category}
             </span>
-            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-800 text-white text-xs font-semibold">
+            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-xl bg-emerald-800 text-white text-xs font-semibold shadow-sm">
               <ShieldCheck size={14} />
-              <span>Peer-Reviewed Admin</span>
+              <span>Peer-Reviewed</span>
             </span>
             <span className="text-xs opacity-70 font-mono">DOI: {article.doi}</span>
           </div>
@@ -164,18 +183,18 @@ export const ArticleReaderView: React.FC<ArticleReaderViewProps> = ({
             {article.title}
           </h1>
 
-          {/* Authors List prominently showing Author Name */}
+          {/* Authors List */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-4 border-y border-current/10 bg-black/5 p-4 rounded-2xl">
             {article.authors.map((auth, idx) => (
               <div key={idx} className="flex items-center gap-3">
                 <img
                   src={auth.avatar}
                   alt={auth.name}
-                  className="w-11 h-11 rounded-full object-cover border border-current/20"
+                  className="w-11 h-11 rounded-full object-cover border-2 border-[#d4a373]/40"
                 />
                 <div>
                   <div className="font-serif font-bold text-sm">
-                    Penulis Utama: <span className="text-[#d4a373]">{auth.name}</span>
+                    Penulis Utama: <span className="text-[#d4a373] font-sans font-extrabold">{auth.name}</span>
                   </div>
                   <div className="text-xs opacity-80">{auth.institution}</div>
                   <div className="text-[11px] font-semibold opacity-70">{auth.role}</div>
@@ -197,7 +216,7 @@ export const ArticleReaderView: React.FC<ArticleReaderViewProps> = ({
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setShowCitationModal(true)}
-                className="px-3.5 py-2 rounded-xl bg-[#062e23] text-[#d4a373] hover:bg-[#1a5948] transition-colors flex items-center gap-1.5 font-bold"
+                className="shimmer-btn px-3.5 py-2 rounded-xl bg-[#062e23] text-[#d4a373] hover:bg-[#1a5948] transition-colors flex items-center gap-1.5 font-bold shadow-sm"
               >
                 <Quote size={14} />
                 <span>Kutip Artikel</span>
@@ -214,7 +233,7 @@ export const ArticleReaderView: React.FC<ArticleReaderViewProps> = ({
               </button>
 
               <button
-                onClick={() => alert(`Simulasi mengunduh PDF jurnal: ${article.title}.pdf (${article.pdfSize})`)}
+                onClick={() => showToast(`Simulasi mengunduh PDF: ${article.title}.pdf (${article.pdfSize})`, 'info')}
                 className="px-3 py-2 rounded-xl border border-current/20 hover:bg-black/5 transition-colors flex items-center gap-1.5"
               >
                 <Download size={14} />
@@ -224,32 +243,33 @@ export const ArticleReaderView: React.FC<ArticleReaderViewProps> = ({
           </div>
         </header>
 
-        {/* Featured News Media Photo Banner (Like Media Online News) */}
+        {/* Featured Banner */}
         {article.coverImage && (
-          <div className="max-w-4xl mx-auto rounded-3xl overflow-hidden shadow-xl border border-current/20 relative group">
+          <div className="reveal max-w-4xl mx-auto rounded-3xl overflow-hidden shadow-xl border border-current/20 relative group">
             <img
               src={article.coverImage}
               alt={article.title}
               className="w-full h-72 sm:h-96 object-cover"
             />
             <div className="bg-black/60 backdrop-blur-md p-3 text-[#f9faf6] text-xs font-sans italic border-t border-white/10 flex items-center justify-between">
-              <span>Dokumentasi Foto Berita Artikel: {article.title}</span>
-              <span className="font-semibold text-[#d4a373]">Satwalogi Media News</span>
+              <span>Dokumentasi Foto Naskah Artikel: {article.title}</span>
+              <span className="font-semibold text-[#d4a373]">Satwalogi Journal</span>
             </div>
           </div>
         )}
 
         {/* Abstract Highlight Card */}
-        <section className="max-w-4xl mx-auto p-6 sm:p-8 rounded-2xl border border-current/20 bg-black/5 space-y-3">
-          <div className="font-serif text-sm font-bold uppercase tracking-widest text-[#d4a373]">
-            Abstrak Ilmiah (Abstract)
+        <section className="reveal max-w-4xl mx-auto p-6 sm:p-8 rounded-2xl border border-current/20 bg-black/5 space-y-3">
+          <div className="font-serif text-xs font-bold uppercase tracking-widest text-[#d4a373] flex items-center gap-1.5">
+            <Sparkles size={14} />
+            <span>Abstrak Ilmiah (Abstract)</span>
           </div>
           <p className="font-serif italic text-sm sm:text-base leading-relaxed opacity-90">
             "{article.abstract}"
           </p>
           <div className="flex flex-wrap gap-1.5 pt-2">
             {article.tags.map((tag) => (
-              <span key={tag} className="px-2.5 py-0.5 rounded text-[11px] font-semibold bg-[#062e23]/10 text-[#062e23] dark:text-[#e8ede6]">
+              <span key={tag} className="px-2.5 py-0.5 rounded-lg text-[11px] font-semibold bg-[#062e23]/10 text-[#062e23] dark:text-[#e8ede6]">
                 #{tag}
               </span>
             ))}
@@ -257,7 +277,7 @@ export const ArticleReaderView: React.FC<ArticleReaderViewProps> = ({
         </section>
 
         {/* Main Article Content Grid */}
-        <div className="max-w-4xl mx-auto">
+        <div className="reveal max-w-4xl mx-auto">
           <div className={`space-y-8 font-serif ${getFontSizeClass()} ${columnLayout === 'double' ? 'md:columns-2 md:gap-8' : ''}`}>
             {/* Section 1: Introduction */}
             <div className="space-y-3 break-inside-avoid">
@@ -329,9 +349,9 @@ export const ArticleReaderView: React.FC<ArticleReaderViewProps> = ({
                   <div
                     key={ref.id}
                     id={`ref-${ref.id}`}
-                    className={`p-3 rounded-xl border transition-all ${
+                    className={`p-3.5 rounded-xl border transition-all ${
                       activeCitation === ref.id
-                        ? 'bg-[#d4a373]/20 border-[#d4a373] font-semibold'
+                        ? 'bg-[#d4a373]/20 border-[#d4a373] font-semibold ring-2 ring-[#d4a373]/40'
                         : 'border-current/10 bg-black/5'
                     }`}
                   >
@@ -381,10 +401,10 @@ export const ArticleReaderView: React.FC<ArticleReaderViewProps> = ({
             <button
               onClick={() => {
                 navigator.clipboard.writeText(`${article.authors[0].name}. (2026). ${article.title}. https://doi.org/${article.doi}`);
-                alert('Sitasi berhasil disalin ke clipboard!');
+                showToast('Sitasi berhasil disalin ke clipboard!', 'success');
                 setShowCitationModal(false);
               }}
-              className="w-full bg-[#062e23] text-[#f9faf6] py-2.5 rounded-xl text-xs font-bold hover:bg-[#1a5948] transition-colors"
+              className="w-full bg-[#062e23] text-[#d4a373] py-2.5 rounded-xl text-xs font-bold hover:bg-[#1a5948] transition-colors"
             >
               Salin Sitasi APA
             </button>

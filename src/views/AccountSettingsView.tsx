@@ -10,6 +10,7 @@ import {
   CheckCircle2
 } from 'lucide-react';
 import { UserProfile } from '../data/satwaData';
+import { useToast } from '../components/Toast';
 
 interface AccountSettingsViewProps {
   user: UserProfile | null;
@@ -17,6 +18,7 @@ interface AccountSettingsViewProps {
 }
 
 export const AccountSettingsView: React.FC<AccountSettingsViewProps> = ({ user, onNavigateScreen }) => {
+  const { showToast } = useToast();
   const [activeSubTab, setActiveSubTab] = useState<'PROFIL' | 'MINAT' | 'KEAMANAN' | 'NOTIFIKASI'>('PROFIL');
   const [name, setName] = useState(user ? user.name : 'Ahmad Fauzi, S.Si.');
   const [title, setTitle] = useState(user ? user.title : 'Peneliti Terkait Satwa');
@@ -59,27 +61,31 @@ export const AccountSettingsView: React.FC<AccountSettingsViewProps> = ({ user, 
   return (
     <div className="space-y-8 pb-24 pt-6">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        {/* Header */}
-        <div className="border-b border-[#062e23]/10 pb-4">
-          <div className="flex items-center gap-2 text-xs font-bold text-[#2d5a4c] uppercase tracking-wider">
-            <Settings size={16} />
-            <span>Manajemen Profil Akademis & Preferensi</span>
+        {/* Header Banner */}
+        <div className="hero-gradient rounded-3xl p-6 sm:p-8 text-[#f9faf6] border border-[#d4a373]/30 shadow-xl relative overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="hero-particles" />
+          <div className="space-y-1 relative z-10">
+            <div className="flex items-center gap-2 text-xs font-bold text-[#d4a373] uppercase tracking-widest">
+              <Settings size={16} />
+              <span>Manajemen Profil Akademis & Preferensi</span>
+            </div>
+            <h1 className="text-xl sm:text-3xl font-serif font-bold text-white mt-0.5">
+              Pengaturan Akun Pengguna
+            </h1>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#062e23] mt-1">
-            Pengaturan Akun Pengguna
-          </h1>
         </div>
 
         {/* Guest alert if not logged in */}
         {!user && (
-          <div className="bg-[#062e23] text-[#e8ede6] p-6 rounded-3xl border border-[#d4a373]/30 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
-            <div className="space-y-1">
+          <div className="hero-gradient text-[#f9faf6] p-6 rounded-3xl border border-[#d4a373]/30 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl relative overflow-hidden">
+            <div className="hero-particles" />
+            <div className="space-y-1 relative z-10">
               <h3 className="font-serif font-bold text-base text-[#d4a373]">Anda Belum Masuk Akun</h3>
               <p className="text-xs text-[#b4d7cd]">Masuk sebagai User Biasa atau Admin untuk menyimpan profil dan minat saintifik secara permanen.</p>
             </div>
             <button
               onClick={() => onNavigateScreen('SCREEN_11')}
-              className="bg-[#d4a373] text-[#062e23] px-5 py-2 rounded-xl text-xs font-bold hover:bg-white transition-colors flex items-center gap-2 shrink-0"
+              className="shimmer-btn bg-gradient-to-r from-[#d4a373] to-[#e8c9a4] text-[#062e23] px-5 py-2 rounded-xl text-xs font-bold hover:scale-[1.02] transition-all flex items-center gap-2 shrink-0 relative z-10"
             >
               <LogIn size={15} />
               <span>Masuk / Daftar Portal</span>
@@ -89,7 +95,7 @@ export const AccountSettingsView: React.FC<AccountSettingsViewProps> = ({ user, 
 
         {/* Success Banner */}
         {savedSuccess && (
-          <div className="bg-emerald-900 text-[#f9faf6] p-4 rounded-2xl border border-emerald-700 flex items-center gap-3 text-xs font-semibold shadow-md">
+          <div className="hero-gradient text-[#f9faf6] p-4 rounded-2xl border border-emerald-500/40 flex items-center gap-3 text-xs font-semibold shadow-md">
             <CheckCircle2 size={18} className="text-[#d4a373]" />
             <span>Pengaturan profil dan minat saintifik Anda telah diperbarui!</span>
           </div>
@@ -99,12 +105,12 @@ export const AccountSettingsView: React.FC<AccountSettingsViewProps> = ({ user, 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Sub-Tab Navigation Sidebar */}
           <div className="lg:col-span-3 space-y-2">
-            <div className="bg-white rounded-2xl p-2 sm:p-3 border border-[#062e23]/10 shadow-sm flex flex-row overflow-x-auto lg:flex-col lg:overflow-visible gap-1.5 no-scrollbar">
+            <div className="glass-card rounded-2xl p-2 sm:p-3 border border-[#062e23]/10 flex flex-row overflow-x-auto lg:flex-col lg:overflow-visible gap-1.5 no-scrollbar">
               <button
                 onClick={() => setActiveSubTab('PROFIL')}
                 className={`text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 whitespace-nowrap ${
                   activeSubTab === 'PROFIL'
-                    ? 'bg-[#062e23] text-[#f9faf6]'
+                    ? 'bg-[#062e23] text-[#d4a373] shadow-md'
                     : 'text-[#062e23] hover:bg-[#e8ede6]'
                 }`}
               >
@@ -169,7 +175,7 @@ export const AccountSettingsView: React.FC<AccountSettingsViewProps> = ({ user, 
                     <div className="space-y-1">
                       <button
                         type="button"
-                        onClick={() => alert('Simulasi unggah foto avatar peneliti baru.')}
+                        onClick={() => showToast('Fitur unggah avatar akan segera tersedia.', 'info')}
                         className="px-4 py-2 rounded-xl bg-[#e8ede6] hover:bg-[#062e23] text-[#062e23] hover:text-[#f9faf6] text-xs font-bold transition-colors"
                       >
                         Ubah Foto Avatar
